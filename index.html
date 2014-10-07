@@ -4,13 +4,17 @@
     <link rel='stylesheet' href='css/style.css'>
   </head>
   <body ng-app='hs3'>
-    <div id='selectionMenu' ng-include="'partials/selectionmenu.html'">
-    </div>
-    <div id='mapCanvas' ng-include="'partials/map.html'">
-    </div>
-
+    
+    <!-- Angular Magic -->
+    <div id='selectionMenu' ng-include="'partials/selectionmenu.html'"></div>
+    <div id='mapCanvas' ng-include="'partials/map.html'"></div>
+    
+    <!-- Includes -->
     <script type='text/javascript' src='js/angular.min.js'></script>
     <script type='text/javascript' src='js/angular-route.min.js'></script>
     <script type='text/javascript' src='app/app.js'></script>
+    <script type='text/javascript' src='app/dataservice.js'></script>
+    <script type='text/javascript' src='app/selectionctrl.js'></script>
+
   </body>
 </html>

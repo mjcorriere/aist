@@ -1,1 +1,13 @@
-OH HELLO
+<div ng-controller='SelectionCtrl'>
+  {{helloWorld}}
+
+  <div ng-repeat='month in stormList'>
+    <h3>{{month.name}}</h3>
+    <ul>
+      <li ng-repeat='flight in month.flights'>
+        {{flight.gh}} -- {{flight.date}}
+      </li>
+    </ul>
+  </div>
+
+</div>
