@@ -9,10 +9,43 @@ html, body {
   width: 325px;
   height: 100%;
   padding: 20px;
+  padding-top: 5px;
   background-color: #555;
   -webkit-box-sizing: border-box;
      -moz-box-sizing: border-box;
       -ms-box-sizing: border-box;
        -o-box-sizing: border-box;
           box-sizing: border-box;  
+}
+
+#selectionMenu h3 {
+  margin-left: 10px;
+}
+
+#selectionMenu p {
+  margin-top: 0px;
+  margin-bottom: 2px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 10px;  
+  width: 100%;
+}
+
+#selectionMenu p:hover {
+  background: #0BB;
+  cursor: pointer;
+}
+
+#selectionMenu p.selected {
+  background: #099;
+  cursor: pointer;
+}
+
+#selectionMenu p.disabled {
+  color: #999;
+}
+
+#selectionMenu p.disabled:hover {
+  background: #555;
+  cursor: default;
 }
