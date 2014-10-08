@@ -11,26 +11,26 @@ hs3.factory('DataService', ['$http', function($http) {
 
     // var rawStorms = $http.get('data/hurricanes.dat');
    
-    stormList = [{"name" : "Alberto", "selected" : false, "available" : true},
-      {"name" : "Beryl", "selected" : false, "available" : true},
-      {"name" : "Chris", "selected" : false, "available" : true},
-      {"name" : "Debby", "selected" : false, "available" : false},
-      {"name" : "Ernesto", "selected" : false, "available" : true},
-      {"name" : "Florence", "selected" : false, "available" : true},
-      {"name" : "Helene", "selected" : false, "available" : true},
-      {"name" : "Gordon", "selected" : false, "available" : false},
-      {"name" : "Isaac", "selected" : false, "available" : true},
-      {"name" : "Joyce", "selected" : false, "available" : true},
-      {"name" : "Kirk", "selected" : false, "available" : false},
-      {"name" : "Leslie", "selected" : false, "available" : false},
-      {"name" : "Michael", "selected" : false, "available" : true},
-      {"name" : "Nadine", "selected" : false, "available" : true},
-      {"name" : "Oscar", "selected" : false, "available" : true},
-      {"name" : "Patty", "selected" : false, "available" : true},
-      {"name" : "Rafael", "selected" : false, "available" : true},
-      {"name" : "Sandy", "selected" : false, "available" : true},
-      {"name" : "Tony", "selected" : false, "available" : true}
-    ];
+    // stormList = [{"name" : "Alberto", "selected" : false, "available" : true},
+    //   {"name" : "Beryl", "selected" : false, "available" : true},
+    //   {"name" : "Chris", "selected" : false, "available" : true},
+    //   {"name" : "Debby", "selected" : false, "available" : false},
+    //   {"name" : "Ernesto", "selected" : false, "available" : true},
+    //   {"name" : "Florence", "selected" : false, "available" : true},
+    //   {"name" : "Helene", "selected" : false, "available" : true},
+    //   {"name" : "Gordon", "selected" : false, "available" : false},
+    //   {"name" : "Isaac", "selected" : false, "available" : true},
+    //   {"name" : "Joyce", "selected" : false, "available" : true},
+    //   {"name" : "Kirk", "selected" : false, "available" : false},
+    //   {"name" : "Leslie", "selected" : false, "available" : false},
+    //   {"name" : "Michael", "selected" : false, "available" : true},
+    //   {"name" : "Nadine", "selected" : false, "available" : true},
+    //   {"name" : "Oscar", "selected" : false, "available" : true},
+    //   {"name" : "Patty", "selected" : false, "available" : true},
+    //   {"name" : "Rafael", "selected" : false, "available" : true},
+    //   {"name" : "Sandy", "selected" : false, "available" : true},
+    //   {"name" : "Tony", "selected" : false, "available" : true}
+    // ];
 
     return stormList;
   }
@@ -57,7 +57,7 @@ hs3.factory('DataService', ['$http', function($http) {
 
   DataService.getHurricaneData      = function() {
 
-    var request = $http.get('data/hurricanes.dat');
+    var request = $http.get('data/storms2013.dat');
 
     return request.then(parseHurricaneData, handleError);
 
@@ -67,39 +67,47 @@ hs3.factory('DataService', ['$http', function($http) {
     console.log('parsing data');
     var data = response.data;
     var lines = data.split('\n');
-    debug = lines;
-    console.log(lines);
+
     for(var i = 0; i < lines.length; i++) {
-      var line = lines[i];
-      console.log(line);
+      var line = lines[i].split(', ');
 
-      if((line.indexOf('**') < 0)) {
-        var splitLine = line.split(',');
-        var name = splitLine[1].trim();
-        var numPoints = parseInt(splitLine[2].trim());
-        console.log(name, numPoints);
+      var name = line[0];
+      var numPoints = parseInt(line[1]);
+      console.log(name, numPoints);
 
-        var storm = {
-          "name" : name.charAt(0).toUpperCase() + name.slice(1).toLowerCase()
-          , "selected"  : false
-          , "available" : true
-          , "position"  : []
-          , "startTime" : null
-          , "endTime"   : null
-        };
+      var storm = {
+        "name" : name
+        , "selected"  : false
+        , "available" : true
+        , "position"  : []
+        , "startTime" : null
+        , "endTime"   : null
+      };
 
-        for(var j = i + 1; j < i + numPoints + 1; j++) {
-          console.log(lines[j]);
+      for(var j = i + 1; j < i + numPoints + 1; j++) {
+        console.log(lines[j]);
+        var point = lines[j].split(', ');
+        storm.position.push({
+          "time" : new Date(point[0])
+          , "lat" : parseFloat(point[1])
+          , "lng" : parseFloat(point[2])
+          , "cat" : point[3]
+        });
+
+        if (j == (i + 1)) {
+          storm.startTime = new Date(point[0]);
+        } else if (j == (i + numPoints)) {
+          storm.endTime = new Date(point[0]);
         }
-
-        i += numPoints;
-
-        // SPLIT OUT THE REMAINING LINES. DATE/TIME
-        // RETURN
 
       }
 
+      i += numPoints;
+      stormList.push(storm);
+
     }
+
+    console.log(stormList);
 
     // REPLACE WITH ACTUAL PARSING OF ACTUAL DATA;
     return [DataService.getStormList(), DataService.getGhList()];
