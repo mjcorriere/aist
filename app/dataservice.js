@@ -1,3 +1,5 @@
+var debug;
+
 hs3.factory('DataService', ['$http', function($http) {
   
   var stormList   = [];
@@ -8,8 +10,7 @@ hs3.factory('DataService', ['$http', function($http) {
   DataService.getStormList = function() {
 
     // var rawStorms = $http.get('data/hurricanes.dat');
-
-    
+   
     stormList = [{"name" : "Alberto", "selected" : false, "available" : true},
       {"name" : "Beryl", "selected" : false, "available" : true},
       {"name" : "Chris", "selected" : false, "available" : true},
@@ -66,20 +67,38 @@ hs3.factory('DataService', ['$http', function($http) {
     console.log('parsing data');
     var data = response.data;
     var lines = data.split('\n');
-
+    debug = lines;
+    console.log(lines);
     for(var i = 0; i < lines.length; i++) {
       var line = lines[i];
-      if((line.indexOf('**') < 0) && (line !== '')) {
+      console.log(line);
+
+      if((line.indexOf('**') < 0)) {
         var splitLine = line.split(',');
         var name = splitLine[1].trim();
         var numPoints = parseInt(splitLine[2].trim());
         console.log(name, numPoints);
 
+        var storm = {
+          "name" : name.charAt(0).toUpperCase() + name.slice(1).toLowerCase()
+          , "selected"  : false
+          , "available" : true
+          , "position"  : []
+          , "startTime" : null
+          , "endTime"   : null
+        };
+
+        for(var j = i + 1; j < i + numPoints + 1; j++) {
+          console.log(lines[j]);
+        }
+
+        i += numPoints;
+
         // SPLIT OUT THE REMAINING LINES. DATE/TIME
         // RETURN
 
-
       }
+
     }
 
     // REPLACE WITH ACTUAL PARSING OF ACTUAL DATA;
