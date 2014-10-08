@@ -47,13 +47,14 @@ for fileName in os.listdir(directoryName):
 
   parsedFiles[fileName] = filteredData
 
+newFile = open(directoryName+'/gh2013.dat', 'w')
+
 for fileName in parsedFiles:
-
-  newFile = open(directoryName+'/'+fileName+'-parsed.dat', 'w')
-
+  newFile.write('AV-X, ' + str(len(parsedFiles[fileName])) + '\n')
   for entry in parsedFiles[fileName]:
-    newFile.write(','.join(entry) + '\n')
+    newFile.write(', '.join(entry) + '\n')
 
-  newFile.close()
+
+newFile.close()
 
 # 2013-09-05T13:47:10.000

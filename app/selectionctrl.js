@@ -19,9 +19,12 @@ hs3.controller('SelectionCtrl', ['$scope', 'DataService',
   function loadData() {
     DataService.getHurricaneData()
       .then(function(data) {
-        $scope.stormList = data[0];
-        $scope.ghList    = data[1];
+        $scope.stormList = data;
         initializeAvailability();
+      });
+    DataService.getGhData()
+      .then(function(data) {
+        $scope.ghList = data;
       });
   }
 

@@ -33,7 +33,7 @@ hs3.factory('DataService', ['$http', function($http) {
     return stormList;
   }
 
-  DataService.getGhList    = function() {
+  DataService.getGhList = function() {
     ghList = [{
       "name"      : "November"
       , "flights" : [{
@@ -53,12 +53,18 @@ hs3.factory('DataService', ['$http', function($http) {
     return ghList;
   }
 
-  DataService.getHurricaneData      = function() {
+  DataService.getHurricaneData = function() {
 
     var request = $http.get('data/storms2013.dat');
 
     return request.then(parseHurricaneData, handleError);
 
+  }
+
+  DataService.getGhData = function() {
+    var request = $http.get('data/gh2013.dat');
+
+    return request.then(parseGhData, handleError);
   }
 
   function parseHurricaneData(response) {
@@ -109,7 +115,12 @@ hs3.factory('DataService', ['$http', function($http) {
     console.log(stormList);
 
     // REPLACE WITH ACTUAL PARSING OF ACTUAL DATA;
-    return [DataService.getStormList(), DataService.getGhList()];
+    return DataService.getStormList();
+  }
+
+  function parseGhData(response) {
+
+    return DataService.getGhList();
   }
 
   function handleError(response) {
