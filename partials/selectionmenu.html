@@ -4,7 +4,7 @@
       ng-click='selectFlight(flight)'
       ng-class="{'selected': flight.selected, 'disabled': !flight.available}">
     {{flight.name}} 
-    <span style='float: right; margin-right: 20px;'>{{flight.startTime.toLocaleDateString()}}</span>
+    <span style='float: right; margin-right: 20px; color: #999'>{{flight.startTime.toLocaleDateString()}}</span>
   </p>
   <h2>Storms</h2>
   <p ng-repeat="storm in stormList"
@@ -12,6 +12,4 @@
       ng-class="{'selected': storm.selected, 'disabled': !storm.available}">
     {{storm.name}}
   </p>
-  {{availabilityWindow}}
-
 </div>

@@ -32,31 +32,31 @@ hs3.controller('SelectionCtrl', ['$scope', 'DataService',
 
   function initializeAvailability() {
     
-    console.log('intializing time window');
+    // console.log('intializing time window');
 
     var minTime = null;
     var maxTime = null;
 
     for(var i = 0; i < $scope.stormList.length; i++) {
-      console.log(minTime, maxTime);
+      // console.log(minTime, maxTime);
 
       if (minTime === null) {
         minTime = +$scope.stormList[i].startTime;
       } else if (minTime >= $scope.stormList[i].startTime) {
         minTime = +$scope.stormList[i].startTime;
-        console.log('inner mintime', minTime);
+        // console.log('inner mintime', minTime);
       }
 
       if (maxTime === null) {
         maxTime = +$scope.stormList[i].endTime;
       } else if (maxTime <= $scope.stormList[i].endTime) {
         maxTime = +$scope.stormList[i].endTime;
-        console.log('inner maxtime', maxTime);
+        // console.log('inner maxtime', maxTime);
       }
 
     }
 
-    console.log('final window:', minTime, maxTime);
+    // console.log('final window:', minTime, maxTime);
 
     $scope.maxAvailabilityWindow.start = minTime;
     $scope.maxAvailabilityWindow.end   = maxTime;
@@ -77,11 +77,11 @@ hs3.controller('SelectionCtrl', ['$scope', 'DataService',
       } else {
         $scope.selectedStorms[index] = false;
       }      
-      console.log(storm.name, 'selected: ', $scope.stormList[index].selected);
+      // console.log(storm.name, 'selected: ', $scope.stormList[index].selected);
       $scope.updateAvailabilityWindow();
       $scope.updateAvailability();
     } else {
-      console.log(storm.name, 'unavailable for selection');
+      // console.log(storm.name, 'unavailable for selection');
     }
   }
 
@@ -95,12 +95,12 @@ hs3.controller('SelectionCtrl', ['$scope', 'DataService',
       } else {
         $scope.selectedFlights[index] = false;
       }
-      console.log(flight.name, 'selected: ', $scope.flightList[index].selected);
+      // console.log(flight.name, 'selected: ', $scope.flightList[index].selected);
       $scope.updateAvailabilityWindow();
       $scope.updateAvailability();
 
     } else {
-      console.log(flight.name, 'unavailable for selection');
+      // console.log(flight.name, 'unavailable for selection');
     }
   }
 
@@ -108,34 +108,32 @@ hs3.controller('SelectionCtrl', ['$scope', 'DataService',
     
     var minTime = null;
     var maxTime = null;
-    var anyStormSelected = false;
     var anyFlightSelected = false;
     // Loop through the currently selected storms and get the
     // maximum window of time.
-    console.log('selectedstorms', $scope.selectedStorms);
-    console.log('selectedflights', $scope.selectedFlights);
+    // console.log('selectedflights', $scope.selectedFlights);
 
-    for(var i = 0; i < $scope.selectedStorms.length; i++) {
-      if($scope.selectedStorms[i] === true) {
-        anyStormSelected = true;
-        console.log('storm', i, 'is selected. checking time.');
+    for(var i = 0; i < $scope.selectedFlights.length; i++) {
+      if($scope.selectedFlights[i] === true) {
+        anyFlightSelected = true;
+        // console.log('flight', i, 'is selected. checking time.');
         if (minTime === null) {
-          minTime = +$scope.stormList[i].startTime;
-        } else if (minTime >= $scope.stormList[i].startTime) {
-          minTime = +$scope.stormList[i].startTime;
+          minTime = +$scope.flightList[i].startTime;
+        } else if (minTime >= $scope.flightList[i].startTime) {
+          minTime = +$scope.flightList[i].startTime;
         }
 
         if (maxTime === null) {
-          maxTime = +$scope.stormList[i].endTime;
-        } else if (maxTime <= $scope.stormList[i].endTime) {
-          maxTime = +$scope.stormList[i].endTime;
+          maxTime = +$scope.flightList[i].endTime;
+        } else if (maxTime <= $scope.flightList[i].endTime) {
+          maxTime = +$scope.flightList[i].endTime;
         }
 
       }
 
     }
 
-    if(!anyStormSelected) {
+    if(!anyFlightSelected) {
       minTime = $scope.maxAvailabilityWindow.start;
       maxTime = $scope.maxAvailabilityWindow.end;
     }
@@ -150,18 +148,18 @@ hs3.controller('SelectionCtrl', ['$scope', 'DataService',
     var minTime = $scope.availabilityWindow.start;
     var maxTime = $scope.availabilityWindow.end;
 
-    for(var i = 0; i < $scope.stormList.length; i++) {
+    for (var i = 0; i < $scope.stormList.length; i++) {
       var storm = $scope.stormList[i];
 
-      if(storm.startTime >= minTime) {
-        storm.available = true;
-      } else {
+      if ((storm.startTime >= maxTime) || (storm.endTime <= minTime)) {
         storm.available = false;
+      } else {
+        storm.available = true;
       }
 
     }
 
-    console.log($scope.stormList);
+    // console.log($scope.stormList);
   }
 
 }]);
