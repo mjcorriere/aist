@@ -9,8 +9,6 @@ hs3.factory('DataService', ['$http', function($http) {
 
   DataService.getStormList = function() {
 
-    // var rawStorms = $http.get('data/hurricanes.dat');
-   
     // stormList = [{"name" : "Alberto", "selected" : false, "available" : true},
     //   {"name" : "Beryl", "selected" : false, "available" : true},
     //   {"name" : "Chris", "selected" : false, "available" : true},
@@ -67,7 +65,8 @@ hs3.factory('DataService', ['$http', function($http) {
     console.log('parsing data');
     var data = response.data;
     var lines = data.split('\n');
-
+    lines.pop();
+    console.log(lines);
     for(var i = 0; i < lines.length; i++) {
       var line = lines[i].split(', ');
 
