@@ -1,16 +1,14 @@
 <div ng-controller='SelectionCtrl'>
   <h2>Global Hawk Flights</h2>
-  <div ng-repeat='month in ghList'>
-    <h3>{{month.name}}</h3>
-    <ul>
-      <li ng-repeat='flight in month.flights'>
-        {{flight.gh}} -- {{flight.date}}
-      </li>
-    </ul>
-  </div>
+  <p ng-repeat="flight in flightList | orderBy:'startTime'"
+      ng-click='selectFlight(flight)'
+      ng-class="{'selected': flight.selected, 'disabled': !flight.available}">
+    {{flight.name}} 
+    <span style='float: right; margin-right: 20px;'>{{flight.startTime.toLocaleDateString()}}</span>
+  </p>
   <h2>Storms</h2>
   <p ng-repeat="storm in stormList"
-      ng-click="selectStorm($index)"
+      ng-click="selectStorm(storm)"
       ng-class="{'selected': storm.selected, 'disabled': !storm.available}">
     {{storm.name}}
   </p>

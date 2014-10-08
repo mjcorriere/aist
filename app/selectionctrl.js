@@ -2,7 +2,7 @@ hs3.controller('SelectionCtrl', ['$scope', 'DataService',
   function($scope, DataService) {
 
   $scope.stormList = [];
-  $scope.ghList    = [];
+  $scope.flightList    = [];
 
   $scope.maxAvailabilityWindow = {
     "start" : null,
@@ -12,7 +12,9 @@ hs3.controller('SelectionCtrl', ['$scope', 'DataService',
     "start": null,
     "end"  : null
   };
+  
   $scope.selectedStorms = [];
+  $scope.selectedFlights = [];
 
   loadData();
 
@@ -22,9 +24,9 @@ hs3.controller('SelectionCtrl', ['$scope', 'DataService',
         $scope.stormList = data;
         initializeAvailability();
       });
-    DataService.getGhData()
+    DataService.getFlightData()
       .then(function(data) {
-        $scope.ghList = data;
+        $scope.flightList = data;
       });
   }
 
@@ -64,11 +66,11 @@ hs3.controller('SelectionCtrl', ['$scope', 'DataService',
 
   }
 
-  $scope.selectStorm = function(index) {
-    var storm = $scope.stormList[index];
+  $scope.selectStorm = function(storm) {
+
     if (storm.available) {
       storm.selected = !storm.selected;
-
+      var index = $scope.stormList.indexOf(storm);
       // If storm is being selected, add it to selected storms
       if(storm.selected) {
         $scope.selectedStorms[index] = true;
@@ -83,14 +85,35 @@ hs3.controller('SelectionCtrl', ['$scope', 'DataService',
     }
   }
 
+  $scope.selectFlight = function(flight) {
+
+    if (flight.available) {
+      flight.selected = !flight.selected;
+      var index = $scope.flightList.indexOf(flight);
+      if(flight.selected) {
+        $scope.selectedFlights[index] = true;
+      } else {
+        $scope.selectedFlights[index] = false;
+      }
+      console.log(flight.name, 'selected: ', $scope.flightList[index].selected);
+      $scope.updateAvailabilityWindow();
+      $scope.updateAvailability();
+
+    } else {
+      console.log(flight.name, 'unavailable for selection');
+    }
+  }
+
   $scope.updateAvailabilityWindow = function() {
     
     var minTime = null;
     var maxTime = null;
     var anyStormSelected = false;
+    var anyFlightSelected = false;
     // Loop through the currently selected storms and get the
     // maximum window of time.
     console.log('selectedstorms', $scope.selectedStorms);
+    console.log('selectedflights', $scope.selectedFlights);
 
     for(var i = 0; i < $scope.selectedStorms.length; i++) {
       if($scope.selectedStorms[i] === true) {

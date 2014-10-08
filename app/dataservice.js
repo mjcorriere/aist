@@ -3,7 +3,7 @@ var debug;
 hs3.factory('DataService', ['$http', function($http) {
   
   var stormList   = [];
-  var ghList      = [];
+  var flightList  = [];
   
   var DataService = {};
 
@@ -33,24 +33,19 @@ hs3.factory('DataService', ['$http', function($http) {
     return stormList;
   }
 
-  DataService.getGhList = function() {
-    ghList = [{
-      "name"      : "November"
-      , "flights" : [{
-          "gh" : "AV-6"
-          , "date" : "11/16"
-          , "available" : true
-        }]
-    },
-    {
-      "name"      : "October"
-      , "flights" : [{
-          "gh" : "AV-1"
-          , "date" : "10/09"
-          , "available" : false
-      }]
-    }]    
-    return ghList;
+  DataService.getFlightList = function() {
+    // flightList = [{
+    //       "name" : "AV-6"
+    //       , "date" : "11/16"
+    //       , "available" : true
+    //   },
+    //   {
+    //       "name" : "AV-1"
+    //       , "date" : "10/09"
+    //       , "available" : false
+    //   }];
+   
+    return flightList;
   }
 
   DataService.getHurricaneData = function() {
@@ -61,14 +56,14 @@ hs3.factory('DataService', ['$http', function($http) {
 
   }
 
-  DataService.getGhData = function() {
+  DataService.getFlightData = function() {
     var request = $http.get('data/gh2013.dat');
 
-    return request.then(parseGhData, handleError);
+    return request.then(parseFlightData, handleError);
   }
 
   function parseHurricaneData(response) {
-    console.log('parsing data');
+    console.log('parsing hurricane data');
     var data = response.data;
     var lines = data.split('\n');
     lines.pop();
@@ -118,9 +113,60 @@ hs3.factory('DataService', ['$http', function($http) {
     return DataService.getStormList();
   }
 
-  function parseGhData(response) {
+  function parseFlightData(response) {
 
-    return DataService.getGhList();
+    console.log('parsing flight data');
+
+    var data = response.data;
+    var lines = data.split('\n');
+
+    console.log(lines);
+
+    for(var i = 0; i < lines.length; i++) {
+      var line = lines[i].split(', ');
+      console.log(line);
+      var name = line[0];
+      var numPoints = parseInt(line[1]);
+
+      console.log(name, numPoints);
+
+      var flight = {
+        "name"        : name
+        , "position"  : []
+        , "startTime" : null
+        , "endTime"   : null
+        , "selected"  : false
+        , "available" : true
+      };
+
+      for(var j = i + 1; j < i + numPoints + 1; j++) {
+        
+        console.log(data);
+        console.log(lines);
+        console.log(lines[j]);
+
+        var point = lines[j].split(', ');
+
+        flight.position.push({
+          "time" : new Date(point[0])
+          , "lat" : parseFloat(point[1])
+          , "lng" : parseFloat(point[2])
+        });
+
+        if (j == (i+ 1)) {
+          flight.startTime = new Date(point[0]);
+        } else if (j == (i + numPoints)) {
+          flight.endTime = new Date(point[0]);
+        }
+
+      }
+
+      i += numPoints;
+      flightList.push(flight);
+
+    }
+
+    return DataService.getFlightList();
   }
 
   function handleError(response) {
