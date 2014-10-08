@@ -1,8 +1,10 @@
 hs3.controller('SelectionCtrl', ['$scope', 'DataService', 
   function($scope, DataService) {
 
+  var polyLines = [];
+
   $scope.stormList = [];
-  $scope.flightList    = [];
+  $scope.flightList = [];
 
   $scope.maxAvailabilityWindow = {
     "start" : null,
@@ -18,54 +20,6 @@ hs3.controller('SelectionCtrl', ['$scope', 'DataService',
 
   loadData();
 
-  function loadData() {
-    DataService.getHurricaneData()
-      .then(function(data) {
-        $scope.stormList = data;
-        initializeAvailability();
-      });
-    DataService.getFlightData()
-      .then(function(data) {
-        $scope.flightList = data;
-      });
-  }
-
-  function initializeAvailability() {
-    
-    // console.log('intializing time window');
-
-    var minTime = null;
-    var maxTime = null;
-
-    for(var i = 0; i < $scope.stormList.length; i++) {
-      // console.log(minTime, maxTime);
-
-      if (minTime === null) {
-        minTime = +$scope.stormList[i].startTime;
-      } else if (minTime >= $scope.stormList[i].startTime) {
-        minTime = +$scope.stormList[i].startTime;
-        // console.log('inner mintime', minTime);
-      }
-
-      if (maxTime === null) {
-        maxTime = +$scope.stormList[i].endTime;
-      } else if (maxTime <= $scope.stormList[i].endTime) {
-        maxTime = +$scope.stormList[i].endTime;
-        // console.log('inner maxtime', maxTime);
-      }
-
-    }
-
-    // console.log('final window:', minTime, maxTime);
-
-    $scope.maxAvailabilityWindow.start = minTime;
-    $scope.maxAvailabilityWindow.end   = maxTime;
-
-    $scope.availabilityWindow.start = minTime;
-    $scope.availabilityWindow.end   = maxTime;
-
-  }
-
   $scope.selectStorm = function(storm) {
 
     if (storm.available) {
@@ -80,6 +34,9 @@ hs3.controller('SelectionCtrl', ['$scope', 'DataService',
       // console.log(storm.name, 'selected: ', $scope.stormList[index].selected);
       $scope.updateAvailabilityWindow();
       $scope.updateAvailability();
+
+      drawSelectedStorms();
+
     } else {
       // console.log(storm.name, 'unavailable for selection');
     }
@@ -161,5 +118,87 @@ hs3.controller('SelectionCtrl', ['$scope', 'DataService',
 
     // console.log($scope.stormList);
   }
+
+
+  function loadData() {
+    DataService.getHurricaneData()
+      .then(function(data) {
+        $scope.stormList = data;
+        initializeAvailability();
+      });
+    DataService.getFlightData()
+      .then(function(data) {
+        $scope.flightList = data;
+      });
+  }
+
+  function initializeAvailability() {
+    
+    // console.log('intializing time window');
+
+    var minTime = null;
+    var maxTime = null;
+
+    for(var i = 0; i < $scope.stormList.length; i++) {
+      // console.log(minTime, maxTime);
+
+      if (minTime === null) {
+        minTime = +$scope.stormList[i].startTime;
+      } else if (minTime >= $scope.stormList[i].startTime) {
+        minTime = +$scope.stormList[i].startTime;
+        // console.log('inner mintime', minTime);
+      }
+
+      if (maxTime === null) {
+        maxTime = +$scope.stormList[i].endTime;
+      } else if (maxTime <= $scope.stormList[i].endTime) {
+        maxTime = +$scope.stormList[i].endTime;
+        // console.log('inner maxtime', maxTime);
+      }
+
+    }
+
+    // console.log('final window:', minTime, maxTime);
+
+    $scope.maxAvailabilityWindow.start = minTime;
+    $scope.maxAvailabilityWindow.end   = maxTime;
+
+    $scope.availabilityWindow.start = minTime;
+    $scope.availabilityWindow.end   = maxTime;
+
+  }
+
+  function drawSelectedStorms() {
+    
+    polyLines = [];
+
+    for(var i = 0; i < $scope.selectedStorms.length; i++) {
+      var isSelected = $scope.selectedStorms[i];
+
+      if (isSelected) {
+        var storm = $scope.stormList[i];
+        var path = [];
+        console.log(storm);
+
+        for(var j = 0; j < storm.position.length; j++) {
+          path.push(new google.maps.LatLng(storm.position[j].lat, storm.position[j].lng))
+        }
+
+        console.log(path);
+
+        polyLines.push(new google.maps.Polyline({
+          "path": path
+          , "geodesic" : true
+          , "strokeColor": "#FE98CA"
+          , "strokeOpacity": 1.0
+          , "strokeWeight" : 3
+          , "map": map
+        }));
+
+      }
+
+    }
+
+  }  
 
 }]);
