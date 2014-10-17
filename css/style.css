@@ -55,6 +55,7 @@ html, body {
 
 #mapCanvas {
   /*max-width: 800px;*/
+  position: relative;
   width: 75%;
   height: 100%;
   float: right;
@@ -62,6 +63,25 @@ html, body {
 }
 
 #mapmap {
+  position: relative;
   width: 100%;
   height: 100%;
+}
+
+#timeline {
+  color: #EEE;
+  height: 75px;
+  z-index: 999;
+  position: absolute;
+  left: 0px;
+  bottom: 0px;
+  right: 0px;
+  margin: 20px;
+  padding: 20px;
+  background-color: #555;
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+      -ms-box-sizing: border-box;
+       -o-box-sizing: border-box;
+          box-sizing: border-box;    
 }
