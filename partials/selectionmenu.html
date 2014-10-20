@@ -11,5 +11,6 @@
       ng-click="selectStorm(storm)"
       ng-class="{'selected': storm.selected, 'disabled': !storm.available}">
     {{storm.name}}
+  <span style='float: right; margin-right: 20px; color: #999'>{{storm.startTime.toLocaleDateString()}}</span>    
   </p>
 </div>

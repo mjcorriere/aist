@@ -3,12 +3,13 @@
   </div>
   <div id='timeline'>
     <slider 
-      floor="10"
-      ceiling="90"
+      floor="{{limits.min}}"
+      ceiling="{{limits.max}}"
       ng-model-low="o.lower"
       ng-model-high="o.upper"
       ng-model-mid="o.mid"
       buffer="5"
+      translate="formatter"
       redraw="redraw">
     </slider>
   </div>  

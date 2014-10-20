@@ -7,8 +7,8 @@ hs3.controller('SelectionCtrl', ['$scope', 'DataService', 'MapService',
   $scope.flightList = [];
 
   $scope.maxAvailabilityWindow = {
-    "start" : null,
-    "end"   : null
+    "min" : null,
+    "max"   : null
   }
   $scope.availabilityWindow = {
     "start": null,
@@ -32,8 +32,8 @@ hs3.controller('SelectionCtrl', ['$scope', 'DataService', 'MapService',
         $scope.selectedStorms[index] = false;
       }      
       // console.log(storm.name, 'selected: ', $scope.stormList[index].selected);
-      $scope.updateAvailabilityWindow();
-      $scope.updateAvailability();
+      DataService.updateAvailabilityWindow($scope.selectedFlights, $scope.selectedStorms);
+      DataService.updateAvailability();
 
       MapService.drawSelectedStorms($scope.selectedStorms);
 
@@ -53,79 +53,22 @@ hs3.controller('SelectionCtrl', ['$scope', 'DataService', 'MapService',
         $scope.selectedFlights[index] = false;
       }
       // console.log(flight.name, 'selected: ', $scope.flightList[index].selected);
-      $scope.updateAvailabilityWindow();
-      $scope.updateAvailability();
+      DataService.updateAvailabilityWindow($scope.selectedFlights, $scope.selectedStorms);
+      DataService.updateAvailability();
 
     } else {
       // console.log(flight.name, 'unavailable for selection');
     }
   }
 
-  $scope.updateAvailabilityWindow = function() {
-    
-    var minTime = null;
-    var maxTime = null;
-    var anyFlightSelected = false;
-    // Loop through the currently selected storms and get the
-    // maximum window of time.
-    // console.log('selectedflights', $scope.selectedFlights);
-
-    for(var i = 0; i < $scope.selectedFlights.length; i++) {
-      if($scope.selectedFlights[i] === true) {
-        anyFlightSelected = true;
-        // console.log('flight', i, 'is selected. checking time.');
-        if (minTime === null) {
-          minTime = +$scope.flightList[i].startTime;
-        } else if (minTime >= $scope.flightList[i].startTime) {
-          minTime = +$scope.flightList[i].startTime;
-        }
-
-        if (maxTime === null) {
-          maxTime = +$scope.flightList[i].endTime;
-        } else if (maxTime <= $scope.flightList[i].endTime) {
-          maxTime = +$scope.flightList[i].endTime;
-        }
-
-      }
-
-    }
-
-    if(!anyFlightSelected) {
-      minTime = $scope.maxAvailabilityWindow.start;
-      maxTime = $scope.maxAvailabilityWindow.end;
-    }
-
-    $scope.availabilityWindow.start = minTime;
-    $scope.availabilityWindow.end = maxTime;
-
-  }
-
-  $scope.updateAvailability = function() {
-    
-    var minTime = $scope.availabilityWindow.start;
-    var maxTime = $scope.availabilityWindow.end;
-
-    for (var i = 0; i < $scope.stormList.length; i++) {
-      var storm = $scope.stormList[i];
-
-      if ((storm.startTime >= maxTime) || (storm.endTime <= minTime)) {
-        storm.available = false;
-      } else {
-        storm.available = true;
-      }
-
-    }
-
-    // console.log($scope.stormList);
-  }
-
-
   function loadData() {
     
     DataService.loadStormData()
       .then(function(data) {
+        DataService.initializeAvailability();
         $scope.stormList = data;
-        initializeAvailability();
+        $scope.maxAvailabilityWindow = DataService.getMaxAvailabilityWindow();
+        $scope.availabilityWindow = DataService.getAvailabilityWindow();
       });
 
     DataService.loadFlightData()
@@ -134,42 +77,5 @@ hs3.controller('SelectionCtrl', ['$scope', 'DataService', 'MapService',
       });
 
   }
-
-  function initializeAvailability() {
-    
-    // console.log('intializing time window');
-
-    var minTime = null;
-    var maxTime = null;
-
-    for(var i = 0; i < $scope.stormList.length; i++) {
-      // console.log(minTime, maxTime);
-
-      if (minTime === null) {
-        minTime = +$scope.stormList[i].startTime;
-      } else if (minTime >= $scope.stormList[i].startTime) {
-        minTime = +$scope.stormList[i].startTime;
-        // console.log('inner mintime', minTime);
-      }
-
-      if (maxTime === null) {
-        maxTime = +$scope.stormList[i].endTime;
-      } else if (maxTime <= $scope.stormList[i].endTime) {
-        maxTime = +$scope.stormList[i].endTime;
-        // console.log('inner maxtime', maxTime);
-      }
-
-    }
-
-    // console.log('final window:', minTime, maxTime);
-
-    $scope.maxAvailabilityWindow.start = minTime;
-    $scope.maxAvailabilityWindow.end   = maxTime;
-
-    $scope.availabilityWindow.start = minTime;
-    $scope.availabilityWindow.end   = maxTime;
-
-  }
-
 
 }]);

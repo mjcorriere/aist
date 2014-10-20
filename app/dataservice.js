@@ -7,6 +7,28 @@ hs3.factory('DataService', ['$http', function($http) {
 
   var stormList   = [];
   var flightList  = [];
+
+  var maxAvailabilityWindow = {
+    "min" : null,
+    "max" : null
+  };
+
+  var currentAvailabilityWindow = {
+    "min" : null,
+    "max" : null
+  };
+
+  var selectedWindow = {
+    "lower" : null,
+    "upper" : null,
+    "mid"   : null
+  };
+
+  var availabilityWindow = {
+    "lower"  : null,
+    "upper"  : null,
+    "mid"    : null
+  };  
   
   var DataService = {};
 
@@ -26,6 +48,14 @@ hs3.factory('DataService', ['$http', function($http) {
     return flightList;
   }
 
+  DataService.getMaxAvailabilityWindow = function() {
+    return maxAvailabilityWindow;
+  }
+
+  DataService.getAvailabilityWindow = function() {
+    return availabilityWindow;
+  }  
+
   DataService.loadStormData = function() {
     
     var request = $http.get('data/storms2013.dat');
@@ -41,6 +71,151 @@ hs3.factory('DataService', ['$http', function($http) {
     return request.then(parseFlightData, handleError);
 
   }
+
+  DataService.initializeAvailability = function() {
+    
+    // console.log('intializing time window');
+
+    var minTime = null;
+    var maxTime = null;
+
+    for(var i = 0; i < stormList.length; i++) {
+      // console.log(minTime, maxTime);
+
+      if (minTime === null) {
+        minTime = +stormList[i].startTime;
+      } else if (minTime >= stormList[i].startTime) {
+        minTime = +stormList[i].startTime;
+        // console.log('inner mintime', minTime);
+      }
+
+      if (maxTime === null) {
+        maxTime = +stormList[i].endTime;
+      } else if (maxTime <= stormList[i].endTime) {
+        maxTime = +stormList[i].endTime;
+        // console.log('inner maxtime', maxTime);
+      }
+
+    }
+
+    for(var i = 0; i < flightList.length; i++) {
+      // console.log(minTime, maxTime);
+
+      if (minTime === null) {
+        minTime = +flightList[i].startTime;
+      } else if (minTime >= flightList[i].startTime) {
+        minTime = +flightList[i].startTime;
+        // console.log('inner mintime', minTime);
+      }
+
+      if (maxTime === null) {
+        maxTime = +flightList[i].endTime;
+      } else if (maxTime <= flightList[i].endTime) {
+        maxTime = +flightList[i].endTime;
+        // console.log('inner maxtime', maxTime);
+      }
+
+    }    
+
+    // console.log('final window:', minTime, maxTime);
+
+    maxAvailabilityWindow.min = minTime;
+    maxAvailabilityWindow.max   = maxTime;
+
+    availabilityWindow.lower = minTime;
+    availabilityWindow.upper   = maxTime;
+
+    availabilityWindow.mid = (maxTime + minTime) / 2;
+
+  }
+
+  DataService.updateAvailabilityWindow = function(selectedFlights, selectedStorms) {
+    
+    var minTime = null;
+    var maxTime = null;
+    var nothingSelected = true;
+    // Loop through the currently selected flights and get the
+    // maximum window of time.
+    // console.log('selectedflights', $scope.selectedFlights);
+
+    for(var i = 0; i < selectedFlights.length; i++) {
+      if(selectedFlights[i] === true) {
+        nothingSelected = false;
+        // console.log('flight', i, 'is selected. checking time.');
+        if (minTime === null) {
+          minTime = +flightList[i].startTime;
+        } else if (minTime >= flightList[i].startTime) {
+          minTime = +flightList[i].startTime;
+        }
+
+        if (maxTime === null) {
+          maxTime = +flightList[i].endTime;
+        } else if (maxTime <= flightList[i].endTime) {
+          maxTime = +flightList[i].endTime;
+        }
+      }
+    }
+
+    for(var i = 0; i < selectedStorms.length; i++) {
+      if(selectedStorms[i] === true) {
+        nothingSelected = false;
+        // console.log('flight', i, 'is selected. checking time.');
+        if (minTime === null) {
+          minTime = +stormList[i].startTime;
+        } else if (minTime >= stormList[i].startTime) {
+          minTime = +stormList[i].startTime;
+        }
+
+        if (maxTime === null) {
+          maxTime = +stormList[i].endTime;
+        } else if (maxTime <= stormList[i].endTime) {
+          maxTime = +stormList[i].endTime;
+        }
+      }
+    }    
+
+    if(nothingSelected) {
+      // Null the thing. This is temporary ...
+      minTime = maxAvailabilityWindow.min;
+      maxTime = maxAvailabilityWindow.max;
+    }
+
+    availabilityWindow.lower = minTime;
+    availabilityWindow.upper = maxTime;
+
+    availabilityWindow.mid = (maxTime + minTime) / 2;
+
+  }
+
+  DataService.updateAvailability = function() {
+    
+    var minTime = availabilityWindow.lower;
+    var maxTime = availabilityWindow.upper;
+
+    for (var i = 0; i < stormList.length; i++) {
+      var storm = stormList[i];
+
+      if ((storm.startTime >= maxTime) || (storm.endTime <= minTime)) {
+        storm.available = false;
+      } else {
+        storm.available = true;
+      }
+
+    }
+
+    for (var i = 0; i < flightList.length; i++) {
+      var flight = flightList[i];
+
+      if ((flight.startTime >= maxTime) || (flight.endTime <= minTime)) {
+        flight.available = false;
+      } else {
+        flight.available = true;
+      }
+
+    }    
+
+    // console.log($scope.stormList);
+  }  
 
   function parseStormData(response) {
     // console.log('parsing hurricane data');
