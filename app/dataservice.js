@@ -2,10 +2,21 @@ var debug;
 
 hs3.factory('DataService', ['$http', function($http) {
   
+  var stormDataParsed = false;
+  var flightDataParsed = false;
+
   var stormList   = [];
   var flightList  = [];
   
   var DataService = {};
+
+  DataService.isStormDataParsed = function() {
+    return stormDataParsed;
+  }
+
+  DataService.isFlightDataParsed = function() {
+    return flightDataParsed;
+  }
 
   DataService.getStormList = function() {
     return stormList;
@@ -15,63 +26,70 @@ hs3.factory('DataService', ['$http', function($http) {
     return flightList;
   }
 
-  DataService.getHurricaneData = function() {
+  DataService.loadStormData = function() {
+    
     var request = $http.get('data/storms2013.dat');
 
-    return request.then(parseHurricaneData, handleError);
+    return request.then(parseStormData, handleError);
+
   }
 
-  DataService.getFlightData = function() {
+  DataService.loadFlightData = function() {
+
     var request = $http.get('data/gh2013.dat');
 
     return request.then(parseFlightData, handleError);
+
   }
 
-  function parseHurricaneData(response) {
+  function parseStormData(response) {
     // console.log('parsing hurricane data');
-    var data = response.data;
-    var lines = data.split('\n');
-    lines.pop();
-    // console.log(lines);
-    for(var i = 0; i < lines.length; i++) {
-      var line = lines[i].split(', ');
 
-      var name = line[0];
-      var numPoints = parseInt(line[1]);
-      // console.log(name, numPoints);
+    if (!stormDataParsed) {
+      stormDataParsed = true;
+      var data = response.data;
+      var lines = data.split('\n');
+      lines.pop();
+      // console.log(lines);
+      for(var i = 0; i < lines.length; i++) {
+        var line = lines[i].split(', ');
 
-      var storm = {
-        "name" : name
-        , "selected"  : false
-        , "available" : true
-        , "position"  : []
-        , "startTime" : null
-        , "endTime"   : null
-      };
+        var name = line[0];
+        var numPoints = parseInt(line[1]);
+        // console.log(name, numPoints);
 
-      for(var j = i + 1; j < i + numPoints + 1; j++) {
-        // console.log(lines[j]);
-        var point = lines[j].split(', ');
-        storm.position.push({
-          "time" : new Date(point[0])
-          , "lat" : parseFloat(point[1])
-          , "lng" : parseFloat(point[2])
-          , "cat" : point[3]
-        });
+        var storm = {
+          "name" : name
+          , "selected"  : false
+          , "available" : true
+          , "position"  : []
+          , "startTime" : null
+          , "endTime"   : null
+        };
 
-        if (j == (i + 1)) {
-          storm.startTime = new Date(point[0]);
-        } else if (j == (i + numPoints)) {
-          storm.endTime = new Date(point[0]);
+        for(var j = i + 1; j < i + numPoints + 1; j++) {
+          // console.log(lines[j]);
+          var point = lines[j].split(', ');
+          storm.position.push({
+            "time" : new Date(point[0])
+            , "lat" : parseFloat(point[1])
+            , "lng" : parseFloat(point[2])
+            , "cat" : point[3]
+          });
+
+          if (j == (i + 1)) {
+            storm.startTime = new Date(point[0]);
+          } else if (j == (i + numPoints)) {
+            storm.endTime = new Date(point[0]);
+          }
+
         }
 
+        i += numPoints;
+        stormList.push(storm);
+
       }
-
-      i += numPoints;
-      stormList.push(storm);
-
     }
-
     // console.log(stormList);
 
     // REPLACE WITH ACTUAL PARSING OF ACTUAL DATA;
@@ -81,54 +99,58 @@ hs3.factory('DataService', ['$http', function($http) {
   function parseFlightData(response) {
 
     // console.log('parsing flight data');
+    if (!flightDataParsed) {
 
-    var data = response.data;
-    var lines = data.split('\n');
+      flightDataParsed = true;
 
-    // console.log(lines);
+      var data = response.data;
+      var lines = data.split('\n');
 
-    for(var i = 0; i < lines.length; i++) {
-      var line = lines[i].split(', ');
-      // console.log(line);
-      var name = line[0];
-      var numPoints = parseInt(line[1]);
+      // console.log(lines);
 
-      // console.log(name, numPoints);
+      for(var i = 0; i < lines.length; i++) {
+        var line = lines[i].split(', ');
+        // console.log(line);
+        var name = line[0];
+        var numPoints = parseInt(line[1]);
 
-      var flight = {
-        "name"        : name
-        , "position"  : []
-        , "startTime" : null
-        , "endTime"   : null
-        , "selected"  : false
-        , "available" : true
-      };
+        // console.log(name, numPoints);
 
-      for(var j = i + 1; j < i + numPoints + 1; j++) {
-        
-        // console.log(data);
-        // console.log(lines);
-        // console.log(lines[j]);
+        var flight = {
+          "name"        : name
+          , "position"  : []
+          , "startTime" : null
+          , "endTime"   : null
+          , "selected"  : false
+          , "available" : true
+        };
 
-        var point = lines[j].split(', ');
+        for(var j = i + 1; j < i + numPoints + 1; j++) {
+          
+          // console.log(data);
+          // console.log(lines);
+          // console.log(lines[j]);
 
-        flight.position.push({
-          "time" : new Date(point[0])
-          , "lat" : parseFloat(point[1])
-          , "lng" : parseFloat(point[2])
-        });
+          var point = lines[j].split(', ');
 
-        if (j == (i+ 1)) {
-          flight.startTime = new Date(point[0]);
-        } else if (j == (i + numPoints)) {
-          flight.endTime = new Date(point[0]);
+          flight.position.push({
+            "time" : new Date(point[0])
+            , "lat" : parseFloat(point[1])
+            , "lng" : parseFloat(point[2])
+          });
+
+          if (j == (i+ 1)) {
+            flight.startTime = new Date(point[0]);
+          } else if (j == (i + numPoints)) {
+            flight.endTime = new Date(point[0]);
+          }
+
         }
 
+        i += numPoints;
+        flightList.push(flight);
+
       }
-
-      i += numPoints;
-      flightList.push(flight);
-
     }
 
     return DataService.getFlightList();

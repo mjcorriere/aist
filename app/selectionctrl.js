@@ -1,5 +1,5 @@
-hs3.controller('SelectionCtrl', ['$scope', 'DataService', 
-  function($scope, DataService) {
+hs3.controller('SelectionCtrl', ['$scope', 'DataService', 'MapService',
+  function($scope, DataService, MapService) {
 
   var polyLines = [];
 
@@ -35,7 +35,7 @@ hs3.controller('SelectionCtrl', ['$scope', 'DataService',
       $scope.updateAvailabilityWindow();
       $scope.updateAvailability();
 
-      drawSelectedStorms();
+      MapService.drawSelectedStorms($scope.selectedStorms);
 
     } else {
       // console.log(storm.name, 'unavailable for selection');
@@ -121,16 +121,18 @@ hs3.controller('SelectionCtrl', ['$scope', 'DataService',
 
 
   function loadData() {
-    DataService.getHurricaneData()
+    
+    DataService.loadStormData()
       .then(function(data) {
         $scope.stormList = data;
         initializeAvailability();
-        createPolyLines();
       });
-    DataService.getFlightData()
+
+    DataService.loadFlightData()
       .then(function(data) {
         $scope.flightList = data;
       });
+
   }
 
   function initializeAvailability() {
@@ -169,58 +171,5 @@ hs3.controller('SelectionCtrl', ['$scope', 'DataService',
 
   }
 
-  function createPolyLines() {
-
-    for (var i = 0; i < $scope.stormList.length; i++) {
-
-      var storm = $scope.stormList[i];
-      var path = [];
-
-      for(var j = 0; j < storm.position.length; j++) {
-        path.push(new google.maps.LatLng(storm.position[j].lat, storm.position[j].lng))
-      }
-
-      polyLines[i] = new google.maps.Polyline({
-        "path": path
-        , "geodesic" : true
-        , "strokeColor": randomColor()
-        , "strokeOpacity": 1.0
-        , "strokeWeight" : 3
-        , "map": null
-      });      
-
-    }
-
-  }
-
-  function drawSelectedStorms() {
-    
-    for(var i = 0; i < $scope.selectedStorms.length; i++) {
-      var isSelected = $scope.selectedStorms[i];
-
-      if (isSelected) {
-        polyLines[i].setMap(map); 
-      } else {
-        polyLines[i].setMap(null);
-      }
-
-    }
-
-  }
-
-function randomColor() {
-  
-  var red   = Math.floor(255 * Math.random())
-    , green = Math.floor(255 * Math.random())
-    , blue  = Math.floor(255 * Math.random())
-  ;
-
-  var color = 'rgb('
-          + red   + ','
-          + green + ','
-          + blue  + ')';
-
-  return color;
-}  
 
 }]);

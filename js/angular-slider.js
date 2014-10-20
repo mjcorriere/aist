@@ -99,7 +99,8 @@
         ngModelLow: '=?',
         ngModelHigh: '=?',
         ngModelMid: '=?',
-        translate: '&'
+        translate: '&',
+        redraw: '&'
       },
       template: '<div class="bar"><div class="selection"></div></div>\n<div class="handle low"></div><div class="handle high"></div>\n<div class="bubble limit low" ng-bind-html="translate({value: floor})"></div>\n<div class="bubble limit high" ng-bind-html="translate({value: ceiling})"></div>\n<div class="bubble value low"></div>\n<div class="bubble value high"></div><div class="handle mid"></div><div class="bubble value mid"></div>',
 
@@ -155,6 +156,10 @@
 
         if (attributes.translate) {
           attributes.$set("translate", "" + attributes.translate + "(value)");
+        }
+
+        if (attributes.redraw) {
+          attributes.$set("redraw", "" + attributes.redraw + "()");
         }
 
         console.log(attributes.translate);
@@ -509,6 +514,7 @@
                     scope[currentRef] = newValue;
                   }
                   setPointers();
+                  scope.redraw();
                   return scope.$apply();
                 };
                 

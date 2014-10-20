@@ -1,0 +1,4 @@
+
+hs3.factory('MapService', ['DataService', function(DataService) {
+  
+}]);

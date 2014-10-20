@@ -12,4 +12,8 @@ hs3.controller('MapCtrl', ['$scope', function($scope) {
     "mid"   : 52
   };
 
+  $scope.redraw = function() {
+    console.log('redrawing map');
+  }
+
 }]);
