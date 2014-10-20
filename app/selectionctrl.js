@@ -1,5 +1,5 @@
-hs3.controller('SelectionCtrl', ['$scope', 'DataService', 'MapService',
-  function($scope, DataService, MapService) {
+hs3.controller('SelectionCtrl', ['$scope', '$q', 'DataService', 'MapService',
+  function($scope, $q, DataService, MapService) {
 
   var polyLines = [];
 
@@ -61,18 +61,23 @@ hs3.controller('SelectionCtrl', ['$scope', 'DataService', 'MapService',
 
   function loadData() {
     
-    DataService.loadStormData()
-      .then(function(data) {
+    $q.all([
+
+      DataService.loadStormData()
+        .then(function(data) {
+          $scope.stormList = data;
+        }),
+      DataService.loadFlightData()
+        .then(function(data) {
+          $scope.flightList = data;
+        })
+
+    ]).then(function() {
+        console.log('ha durrrrr');
         DataService.initializeAvailability();
-        $scope.stormList = data;
         $scope.maxAvailabilityWindow = DataService.getMaxAvailabilityWindow();
         $scope.availabilityWindow = DataService.getCurrentAvailabilityWindow();
-      });
-
-    DataService.loadFlightData()
-      .then(function(data) {
-        $scope.flightList = data;
-      });
+    });
 
   }
 

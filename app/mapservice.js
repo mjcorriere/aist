@@ -1,11 +1,16 @@
 
-hs3.factory('MapService', ['DataService', '$q', function(DataService, $q) {
+hs3.factory('MapService', ['RenderService', 'DataService', '$q', function(RenderService, DataService, $q) {
   
   var stormList = [];
   var flightList = [];
 
   var stormPolyLines = [];
   var flightPolyLines = [];
+
+  var selectedStorms = [];
+  var selectedFlights = [];
+
+  var selectedWindow;
 
   var MapService = {};
 
@@ -61,19 +66,29 @@ hs3.factory('MapService', ['DataService', '$q', function(DataService, $q) {
 
   }
 
-  MapService.drawSelectedStorms = function(selectedStorms) {
+  MapService.drawSelectedStorms = function(_selectedStorms) {
 
     console.log('storm polys', stormPolyLines);
     console.log('selected', selectedStorms);
+
+    if (_selectedStorms) {
+      selectedStorms = _selectedStorms;
+    }
     
     for(var i = 0; i < selectedStorms.length; i++) {
       var isSelected = selectedStorms[i];
 
+      // if (isSelected) {
+      //   stormPolyLines[i].setMap(map); 
+      // } else {
+      //   stormPolyLines[i].setMap(null);
+      // }
+
       if (isSelected) {
-        stormPolyLines[i].setMap(map); 
+        RenderService.draw(stormList[i], selectedWindow);
       } else {
         stormPolyLines[i].setMap(null);
-      }
+      }      
 
     }
 
@@ -110,7 +125,11 @@ hs3.factory('MapService', ['DataService', '$q', function(DataService, $q) {
         })
       ]).then(function() {
         console.log('******* WORKRKRKRKED');
-        MapService.createPolyLines();        
+        MapService.createPolyLines();
+        DataService.initializeAvailability();
+        // maxAvailabilityWindow = DataService.getMaxAvailabilityWindow();
+        // availabilityWindow = DataService.getCurrentAvailabilityWindow();
+        selectedWindow = DataService.getSelectedWindow();
       });
    
   }

@@ -1,4 +1,4 @@
-hs3.controller('MapCtrl', ['$scope', 'DataService', function($scope, DataService) {
+hs3.controller('MapCtrl', ['$scope', 'DataService', 'MapService', function($scope, DataService, MapService) {
   initializeMap();
 
   $scope.stormList = [];
@@ -14,6 +14,7 @@ hs3.controller('MapCtrl', ['$scope', 'DataService', function($scope, DataService
 
   $scope.redraw = function() {
     console.log('redrawing map');
+    MapService.drawSelectedStorms();
   }
 
   loadData();
