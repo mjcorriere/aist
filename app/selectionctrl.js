@@ -6,14 +6,8 @@ hs3.controller('SelectionCtrl', ['$scope', 'DataService', 'MapService',
   $scope.stormList = [];
   $scope.flightList = [];
 
-  $scope.maxAvailabilityWindow = {
-    "min" : null,
-    "max"   : null
-  }
-  $scope.availabilityWindow = {
-    "start": null,
-    "end"  : null
-  };
+  $scope.maxAvailabilityWindow = {};
+  $scope.availabilityWindow = {};
   
   $scope.selectedStorms = [];
   $scope.selectedFlights = [];
@@ -36,6 +30,7 @@ hs3.controller('SelectionCtrl', ['$scope', 'DataService', 'MapService',
       DataService.updateAvailability();
 
       MapService.drawSelectedStorms($scope.selectedStorms);
+      MapService.drawSelectedFlights($scope.selectedFlights);
 
     } else {
       // console.log(storm.name, 'unavailable for selection');
@@ -56,6 +51,9 @@ hs3.controller('SelectionCtrl', ['$scope', 'DataService', 'MapService',
       DataService.updateAvailabilityWindow($scope.selectedFlights, $scope.selectedStorms);
       DataService.updateAvailability();
 
+      MapService.drawSelectedStorms($scope.selectedStorms);
+      MapService.drawSelectedFlights($scope.selectedFlights);
+
     } else {
       // console.log(flight.name, 'unavailable for selection');
     }
@@ -68,7 +66,7 @@ hs3.controller('SelectionCtrl', ['$scope', 'DataService', 'MapService',
         DataService.initializeAvailability();
         $scope.stormList = data;
         $scope.maxAvailabilityWindow = DataService.getMaxAvailabilityWindow();
-        $scope.availabilityWindow = DataService.getAvailabilityWindow();
+        $scope.availabilityWindow = DataService.getCurrentAvailabilityWindow();
       });
 
     DataService.loadFlightData()

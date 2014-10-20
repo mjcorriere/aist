@@ -23,13 +23,7 @@ hs3.factory('DataService', ['$http', function($http) {
     "upper" : null,
     "mid"   : null
   };
-
-  var availabilityWindow = {
-    "lower"  : null,
-    "upper"  : null,
-    "mid"    : null
-  };  
-  
+ 
   var DataService = {};
 
   DataService.isStormDataParsed = function() {
@@ -52,9 +46,13 @@ hs3.factory('DataService', ['$http', function($http) {
     return maxAvailabilityWindow;
   }
 
-  DataService.getAvailabilityWindow = function() {
-    return availabilityWindow;
-  }  
+  DataService.getCurrentAvailabilityWindow = function() {
+    return currentAvailabilityWindow;
+  }
+
+  DataService.getSelectedWindow = function() {
+    return selectedWindow;
+  }    
 
   DataService.loadStormData = function() {
     
@@ -122,10 +120,13 @@ hs3.factory('DataService', ['$http', function($http) {
     maxAvailabilityWindow.min = minTime;
     maxAvailabilityWindow.max   = maxTime;
 
-    availabilityWindow.lower = minTime;
-    availabilityWindow.upper   = maxTime;
+    currentAvailabilityWindow.min = minTime;
+    currentAvailabilityWindow.max   = maxTime;
 
-    availabilityWindow.mid = (maxTime + minTime) / 2;
+    selectedWindow.lower = minTime;
+    selectedWindow.upper   = maxTime;
+
+    selectedWindow.mid = (maxTime + minTime) / 2;
 
   }
 
@@ -180,17 +181,19 @@ hs3.factory('DataService', ['$http', function($http) {
       maxTime = maxAvailabilityWindow.max;
     }
 
-    availabilityWindow.lower = minTime;
-    availabilityWindow.upper = maxTime;
+    currentAvailabilityWindow.min = minTime;
+    currentAvailabilityWindow.max = maxTime;
 
-    availabilityWindow.mid = (maxTime + minTime) / 2;
+    selectedWindow.lower = minTime;
+    selectedWindow.upper = maxTime;
+    selectedWindow.mid = (maxTime + minTime) / 2;
 
   }
 
   DataService.updateAvailability = function() {
     
-    var minTime = availabilityWindow.lower;
-    var maxTime = availabilityWindow.upper;
+    var minTime = currentAvailabilityWindow.min;
+    var maxTime = currentAvailabilityWindow.max;
 
     for (var i = 0; i < stormList.length; i++) {
       var storm = stormList[i];
@@ -273,7 +276,8 @@ hs3.factory('DataService', ['$http', function($http) {
 
   function parseFlightData(response) {
 
-    // console.log('parsing flight data');
+    console.log('parsing flight data');
+    console.log(response);
     if (!flightDataParsed) {
 
       flightDataParsed = true;

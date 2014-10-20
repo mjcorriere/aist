@@ -25,8 +25,8 @@ hs3.controller('MapCtrl', ['$scope', 'DataService', function($scope, DataService
         DataService.initializeAvailability();
 
         $scope.stormList  = data;
-        $scope.limits     = DataService.getMaxAvailabilityWindow();
-        $scope.o          = DataService.getAvailabilityWindow();
+        $scope.limits     = DataService.getCurrentAvailabilityWindow();
+        $scope.o          = DataService.getSelectedWindow();
 
         console.log('maxAvailabilityWindow', $scope.limits);
 
