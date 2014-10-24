@@ -21,7 +21,7 @@ hs3.service('RenderService', [function() {
     , strokeWeight  : 2
     , scale         : 6.0
   };
-  var polyLineOptions  = {
+  var polylineOptions  = {
     clickable       : false
     , draggable     : false
     , editable      : false
@@ -37,6 +37,8 @@ hs3.service('RenderService', [function() {
   var RenderService = {}
 
   RenderService.draw = function(trackable, timeWindow) {
+
+    var options, markerOptions;
 
     if (!timeWindow) {
         return null;
@@ -99,26 +101,37 @@ hs3.service('RenderService', [function() {
 
     }
 
-    if (positionMarker) {
+    // if (positionMarker) {
 
-      positionMarker.setPosition(p);
+    //   positionMarker.setPosition(p);
 
-    } else {
+    // } else {
 
-      positionMarker = new google.maps.Marker({
-          "icon"        : icon
-          , "position"  : p
-          , "map"       : map
-      });
+    //   positionMarker = new google.maps.Marker({
+    //       "icon"        : icon
+    //       , "position"  : p
+    //       , "map"       : map
+    //   });
   
+    // }
+
+    markerOptions = {
+      "icon"        : icon
+      , "position"  : p
+      , "map"       : map
     }
 
-    // console.log(subTrack);
+    polylineOptions.path = coordinates;
+    polylineOptions.map  = map;
 
-    polyLineOptions.path = coordinates;
-    polyLineOptions.map  = map;
-    // console.log(this.polyLineOptions);
-    polyLine.setOptions(polyLineOptions);
+    // polyLine.setOptions(polylineOptions);
+
+    options = {
+      "polylineOptions" : polylineOptions
+      , "markerOptions" : markerOptions
+    };
+
+    return options;
 
   }
 

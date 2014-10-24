@@ -15,6 +15,7 @@ hs3.controller('MapCtrl', ['$scope', 'DataService', 'MapService', function($scop
   $scope.redraw = function() {
     console.log('redrawing map');
     MapService.drawSelectedStorms();
+    MapService.drawSelectedFlights();
   }
 
   loadData();

@@ -7,35 +7,38 @@ hs3.factory('MapService', ['RenderService', 'DataService', '$q', function(Render
   var stormPolyLines  = [];
   var flightPolyLines = [];
 
+  var stormTracks = [];
+  var flightTracks = [];
+
   var selectedWindow;
 
   var MapService      = {};
 
   MapService.createPolyLines = function() {
 
-    console.log('creating storm polylines');
+    // console.log('creating storm polylines');
 
-    console.log('stormlist', stormList);
+    // console.log('stormlist', stormList);
 
-    for (var i = 0; i < stormList.length; i++) {
+    // for (var i = 0; i < stormList.length; i++) {
 
-      var storm = stormList[i];
-      var path  = [];
+    //   var storm = stormList[i];
+    //   var path  = [];
 
-      for(var j = 0; j < storm.position.length; j++) {
-        path.push(new google.maps.LatLng(storm.position[j].lat, storm.position[j].lng))
-      }
+    //   for(var j = 0; j < storm.position.length; j++) {
+    //     path.push(new google.maps.LatLng(storm.position[j].lat, storm.position[j].lng))
+    //   }
 
-      stormPolyLines[i] = new google.maps.Polyline({
-        "path"            : path
-        , "geodesic"      : true
-        , "strokeColor"   : randomColor()
-        , "strokeOpacity" : 1.0
-        , "strokeWeight"  : 3
-        , "map"           : null
-      });      
+    //   stormPolyLines[i] = new google.maps.Polyline({
+    //     "path"            : path
+    //     , "geodesic"      : true
+    //     , "strokeColor"   : randomColor()
+    //     , "strokeOpacity" : 1.0
+    //     , "strokeWeight"  : 3
+    //     , "map"           : null
+    //   });      
 
-    }
+    // }
 
     console.log('creating flight polylines');
 
@@ -61,6 +64,19 @@ hs3.factory('MapService', ['RenderService', 'DataService', '$q', function(Render
 
     }    
 
+    ///******************************
+
+    console.log('initializing storms/flights');
+
+    for (var i = 0; i < stormList.length; i++) {
+
+      stormTracks[i] = {
+        "polyline"  : new google.maps.Polyline()
+        , "marker"  : new google.maps.Marker()
+      };
+
+    }
+
   }
 
   MapService.drawSelectedStorms = function() {
@@ -70,16 +86,30 @@ hs3.factory('MapService', ['RenderService', 'DataService', '$q', function(Render
 
     var selectedStorms = DataService.getSelectedStorms();
     
+    // for(var i = 0; i < selectedStorms.length; i++) {
+    //   var isSelected = selectedStorms[i];
+
+    //   if (isSelected) {
+    //     RenderService.draw(stormList[i], selectedWindow);
+    //   } else {
+    //     stormPolyLines[i].setMap(null);
+    //   }      
+
+    // }
+
     for(var i = 0; i < selectedStorms.length; i++) {
       var isSelected = selectedStorms[i];
 
       if (isSelected) {
-        RenderService.draw(stormList[i], selectedWindow);
+        var options = RenderService.draw(stormList[i], selectedWindow);
+        stormTracks[i].polyline.setOptions(options.polylineOptions);
+        stormTracks[i].marker.setOptions(options.markerOptions);
       } else {
-        stormPolyLines[i].setMap(null);
+        stormTracks[i].polyline.setMap(null);
+        stormTracks[i].marker.setMap(null);
       }      
 
-    }
+    }    
 
   }
 
@@ -94,10 +124,10 @@ hs3.factory('MapService', ['RenderService', 'DataService', '$q', function(Render
       var isSelected = selectedFlights[i];
 
       if (isSelected) {
-        flightPolyLines[i].setMap(map);
+        RenderService.draw(flightList[i], selectedWindow);
       } else {
         flightPolyLines[i].setMap(null);
-      }
+      }      
 
     }
 
