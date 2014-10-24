@@ -54,6 +54,25 @@ hs3.service('RenderService', [function() {
     time      = timeWindow.mid;
     position  = trackable.position;
 
+    if (time < trackable.startTime || time > trackable.endTime) {
+
+      markerOptions = {
+        "map"       : null
+      };
+
+      polylineOptions.map  = null;
+
+      // polyLine.setOptions(polylineOptions);
+
+      options = {
+        "polylineOptions" : polylineOptions
+        , "markerOptions" : markerOptions
+      };
+
+      return options;
+
+    }
+
     if (timeWindow.lower < trackable.startTime) {
       startIndex = 0;
       // startPosition = track[0].position;
@@ -101,30 +120,13 @@ hs3.service('RenderService', [function() {
 
     }
 
-    // if (positionMarker) {
-
-    //   positionMarker.setPosition(p);
-
-    // } else {
-
-    //   positionMarker = new google.maps.Marker({
-    //       "icon"        : icon
-    //       , "position"  : p
-    //       , "map"       : map
-    //   });
-  
-    // }
-
     markerOptions = {
-      "icon"        : icon
-      , "position"  : p
+      "position"    : p
       , "map"       : map
-    }
+    };
 
     polylineOptions.path = coordinates;
     polylineOptions.map  = map;
-
-    // polyLine.setOptions(polylineOptions);
 
     options = {
       "polylineOptions" : polylineOptions

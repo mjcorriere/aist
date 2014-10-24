@@ -4,9 +4,6 @@ hs3.factory('MapService', ['RenderService', 'DataService', '$q', function(Render
   var stormList       = [];
   var flightList      = [];
 
-  var stormPolyLines  = [];
-  var flightPolyLines = [];
-
   var stormTracks = [];
   var flightTracks = [];
 
@@ -14,55 +11,27 @@ hs3.factory('MapService', ['RenderService', 'DataService', '$q', function(Render
 
   var MapService      = {};
 
+  function createIcon() {
+
+    var icon            = {
+      path            : google.maps.SymbolPath.CIRCLE
+      , fillColor     : randomColor()
+      , fillOpacity   : 1.0
+      , strokeColor   : 'rgb(0, 0, 0)'
+      , strokeWeight  : 2
+      , scale         : 6.0
+      , optimized     : false
+      , map           : null
+    };
+
+//    var imgIcon = 'https://google-developers.appspot.com/maps/documentation/javascript/examples/full/images/beachflag.png';
+
+    return icon;
+    // return imgIcon;
+
+  }
+
   MapService.createPolyLines = function() {
-
-    // console.log('creating storm polylines');
-
-    // console.log('stormlist', stormList);
-
-    // for (var i = 0; i < stormList.length; i++) {
-
-    //   var storm = stormList[i];
-    //   var path  = [];
-
-    //   for(var j = 0; j < storm.position.length; j++) {
-    //     path.push(new google.maps.LatLng(storm.position[j].lat, storm.position[j].lng))
-    //   }
-
-    //   stormPolyLines[i] = new google.maps.Polyline({
-    //     "path"            : path
-    //     , "geodesic"      : true
-    //     , "strokeColor"   : randomColor()
-    //     , "strokeOpacity" : 1.0
-    //     , "strokeWeight"  : 3
-    //     , "map"           : null
-    //   });      
-
-    // }
-
-    console.log('creating flight polylines');
-
-    console.log('flightlist', flightList);
-
-    for (var i = 0; i < flightList.length; i++) {
-
-      var flight = flightList[i];
-      var path = [];
-
-      for(var j = 0; j < flight.position.length; j++) {
-        path.push(new google.maps.LatLng(flight.position[j].lat, flight.position[j].lng))
-      }
-
-      flightPolyLines[i] = new google.maps.Polyline({
-        "path"            : path
-        , "geodesic"      : true
-        , "strokeColor"   : randomColor()
-        , "strokeOpacity" : 1.0
-        , "strokeWeight"  : 3
-        , "map"           : null
-      });      
-
-    }    
 
     ///******************************
 
@@ -72,51 +41,53 @@ hs3.factory('MapService', ['RenderService', 'DataService', '$q', function(Render
 
       stormTracks[i] = {
         "polyline"  : new google.maps.Polyline()
-        , "marker"  : new google.maps.Marker()
+        , "marker"  : new google.maps.Marker({ "icon" : createIcon() })
       };
 
     }
 
-  }
+    for (var i = 0; i < flightList.length; i++) {
 
-  MapService.drawSelectedStorms = function() {
-
-    console.log('storm polys', stormPolyLines);
-    console.log('selected', selectedStorms);
-
-    var selectedStorms = DataService.getSelectedStorms();
-    
-    // for(var i = 0; i < selectedStorms.length; i++) {
-    //   var isSelected = selectedStorms[i];
-
-    //   if (isSelected) {
-    //     RenderService.draw(stormList[i], selectedWindow);
-    //   } else {
-    //     stormPolyLines[i].setMap(null);
-    //   }      
-
-    // }
-
-    for(var i = 0; i < selectedStorms.length; i++) {
-      var isSelected = selectedStorms[i];
-
-      if (isSelected) {
-        var options = RenderService.draw(stormList[i], selectedWindow);
-        stormTracks[i].polyline.setOptions(options.polylineOptions);
-        stormTracks[i].marker.setOptions(options.markerOptions);
-      } else {
-        stormTracks[i].polyline.setMap(null);
-        stormTracks[i].marker.setMap(null);
-      }      
+      flightTracks[i] = {
+        "polyline"  : new google.maps.Polyline()
+        , "marker"  : new google.maps.Marker({ "icon" : createIcon() })
+      };
 
     }    
 
   }
 
-  MapService.drawSelectedFlights = function() {
+  MapService.drawSelectedStorms = function() {
 
-    console.log('flight polys', stormPolyLines);
-    console.log('selected', selectedFlights);
+    var selectedStorms = DataService.getSelectedStorms();
+
+    for(var i = 0; i < selectedStorms.length; i++) {
+      var isSelected = selectedStorms[i];
+
+      if (isSelected) {
+        
+        var options = RenderService.draw(stormList[i], selectedWindow);
+        stormTracks[i].polyline.setOptions(options.polylineOptions);
+
+        if (options.polylineOptions.map == null) {
+          stormTracks[i].marker.setMap(null);
+        } else {
+          if (stormTracks[i].marker.map == null) {
+            stormTracks[i].marker.setMap(options.markerOptions.map);
+          }
+          stormTracks[i].marker.setPosition(options.markerOptions.position);          
+        }
+
+      } else {
+        stormTracks[i].polyline.setMap(null);
+        stormTracks[i].marker.setMap(null);
+      }      
+
+    }
+
+  }
+
+  MapService.drawSelectedFlights = function() {
 
     var selectedFlights = DataService.getSelectedFlights();
     
@@ -124,9 +95,12 @@ hs3.factory('MapService', ['RenderService', 'DataService', '$q', function(Render
       var isSelected = selectedFlights[i];
 
       if (isSelected) {
-        RenderService.draw(flightList[i], selectedWindow);
+        var options = RenderService.draw(flightList[i], selectedWindow);
+        flightTracks[i].polyline.setOptions(options.polylineOptions);
+        flightTracks[i].marker.setOptions(options.markerOptions);
       } else {
-        flightPolyLines[i].setMap(null);
+        flightTracks[i].polyline.setMap(null);
+        flightTracks[i].marker.setMap(null);
       }      
 
     }
