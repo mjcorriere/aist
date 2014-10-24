@@ -1,18 +1,15 @@
 
 hs3.factory('MapService', ['RenderService', 'DataService', '$q', function(RenderService, DataService, $q) {
   
-  var stormList = [];
-  var flightList = [];
+  var stormList       = [];
+  var flightList      = [];
 
-  var stormPolyLines = [];
+  var stormPolyLines  = [];
   var flightPolyLines = [];
-
-  var selectedStorms = [];
-  var selectedFlights = [];
 
   var selectedWindow;
 
-  var MapService = {};
+  var MapService      = {};
 
   MapService.createPolyLines = function() {
 
@@ -23,19 +20,19 @@ hs3.factory('MapService', ['RenderService', 'DataService', '$q', function(Render
     for (var i = 0; i < stormList.length; i++) {
 
       var storm = stormList[i];
-      var path = [];
+      var path  = [];
 
       for(var j = 0; j < storm.position.length; j++) {
         path.push(new google.maps.LatLng(storm.position[j].lat, storm.position[j].lng))
       }
 
       stormPolyLines[i] = new google.maps.Polyline({
-        "path": path
-        , "geodesic" : true
-        , "strokeColor": randomColor()
-        , "strokeOpacity": 1.0
-        , "strokeWeight" : 3
-        , "map": null
+        "path"            : path
+        , "geodesic"      : true
+        , "strokeColor"   : randomColor()
+        , "strokeOpacity" : 1.0
+        , "strokeWeight"  : 3
+        , "map"           : null
       });      
 
     }
@@ -54,35 +51,27 @@ hs3.factory('MapService', ['RenderService', 'DataService', '$q', function(Render
       }
 
       flightPolyLines[i] = new google.maps.Polyline({
-        "path": path
-        , "geodesic" : true
-        , "strokeColor": randomColor()
-        , "strokeOpacity": 1.0
-        , "strokeWeight" : 3
-        , "map": null
+        "path"            : path
+        , "geodesic"      : true
+        , "strokeColor"   : randomColor()
+        , "strokeOpacity" : 1.0
+        , "strokeWeight"  : 3
+        , "map"           : null
       });      
 
     }    
 
   }
 
-  MapService.drawSelectedStorms = function(_selectedStorms) {
+  MapService.drawSelectedStorms = function() {
 
     console.log('storm polys', stormPolyLines);
     console.log('selected', selectedStorms);
 
-    if (_selectedStorms) {
-      selectedStorms = _selectedStorms;
-    }
+    var selectedStorms = DataService.getSelectedStorms();
     
     for(var i = 0; i < selectedStorms.length; i++) {
       var isSelected = selectedStorms[i];
-
-      // if (isSelected) {
-      //   stormPolyLines[i].setMap(map); 
-      // } else {
-      //   stormPolyLines[i].setMap(null);
-      // }
 
       if (isSelected) {
         RenderService.draw(stormList[i], selectedWindow);
@@ -94,10 +83,12 @@ hs3.factory('MapService', ['RenderService', 'DataService', '$q', function(Render
 
   }
 
-  MapService.drawSelectedFlights = function(selectedFlights) {
+  MapService.drawSelectedFlights = function() {
 
     console.log('flight polys', stormPolyLines);
     console.log('selected', selectedFlights);
+
+    var selectedFlights = DataService.getSelectedFlights();
     
     for(var i = 0; i < selectedFlights.length; i++) {
       var isSelected = selectedFlights[i];

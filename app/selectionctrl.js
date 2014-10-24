@@ -9,53 +9,43 @@ hs3.controller('SelectionCtrl', ['$scope', '$q', 'DataService', 'MapService',
   $scope.maxAvailabilityWindow = {};
   $scope.availabilityWindow = {};
   
-  $scope.selectedStorms = [];
-  $scope.selectedFlights = [];
+  // $scope.selectedStorms = [];
+  // $scope.selectedFlights = [];
 
   loadData();
 
   $scope.selectStorm = function(storm) {
 
     if (storm.available) {
-      storm.selected = !storm.selected;
-      var index = $scope.stormList.indexOf(storm);
-      // If storm is being selected, add it to selected storms
-      if(storm.selected) {
-        $scope.selectedStorms[index] = true;
-      } else {
-        $scope.selectedStorms[index] = false;
-      }      
-      // console.log(storm.name, 'selected: ', $scope.stormList[index].selected);
-      DataService.updateAvailabilityWindow($scope.selectedFlights, $scope.selectedStorms);
-      DataService.updateAvailability();
+      
+      DataService.selectStorm(storm);
 
-      MapService.drawSelectedStorms($scope.selectedStorms);
-      MapService.drawSelectedFlights($scope.selectedFlights);
+      // MapService.drawSelectedStorms($scope.selectedStorms);
+      // MapService.drawSelectedFlights($scope.selectedFlights);
+
+      MapService.drawSelectedStorms();
+      MapService.drawSelectedFlights();
 
     } else {
-      // console.log(storm.name, 'unavailable for selection');
+      console.log(storm.name, 'unavailable for selection');
     }
+
   }
 
   $scope.selectFlight = function(flight) {
 
     if (flight.available) {
-      flight.selected = !flight.selected;
-      var index = $scope.flightList.indexOf(flight);
-      if(flight.selected) {
-        $scope.selectedFlights[index] = true;
-      } else {
-        $scope.selectedFlights[index] = false;
-      }
-      // console.log(flight.name, 'selected: ', $scope.flightList[index].selected);
-      DataService.updateAvailabilityWindow($scope.selectedFlights, $scope.selectedStorms);
-      DataService.updateAvailability();
 
-      MapService.drawSelectedStorms($scope.selectedStorms);
-      MapService.drawSelectedFlights($scope.selectedFlights);
+      DataService.selectFlight(flight);
+
+      // MapService.drawSelectedStorms($scope.selectedStorms);
+      // MapService.drawSelectedFlights($scope.selectedFlights);
+
+      MapService.drawSelectedStorms();
+      MapService.drawSelectedFlights();
 
     } else {
-      // console.log(flight.name, 'unavailable for selection');
+      console.log(flight.name, 'unavailable for selection');
     }
   }
 
@@ -73,7 +63,6 @@ hs3.controller('SelectionCtrl', ['$scope', '$q', 'DataService', 'MapService',
         })
 
     ]).then(function() {
-        console.log('ha durrrrr');
         DataService.initializeAvailability();
         $scope.maxAvailabilityWindow = DataService.getMaxAvailabilityWindow();
         $scope.availabilityWindow = DataService.getCurrentAvailabilityWindow();

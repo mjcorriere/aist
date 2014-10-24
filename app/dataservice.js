@@ -2,11 +2,14 @@ var debug;
 
 hs3.factory('DataService', ['$http', function($http) {
   
-  var stormDataParsed = false;
-  var flightDataParsed = false;
+  var stormDataParsed   = false;
+  var flightDataParsed  = false;
 
-  var stormList   = [];
-  var flightList  = [];
+  var stormList         = [];
+  var flightList        = [];
+
+  var selectedStorms    = [];
+  var selectedFlights   = [];
 
   var maxAvailabilityWindow = {
     "min" : null,
@@ -52,7 +55,49 @@ hs3.factory('DataService', ['$http', function($http) {
 
   DataService.getSelectedWindow = function() {
     return selectedWindow;
-  }    
+  }
+
+  DataService.getSelectedStorms = function () {
+    return selectedStorms;
+  }
+
+  DataService.getSelectedFlights = function () {
+    return selectedFlights;
+  }  
+
+  DataService.selectStorm = function(storm) {
+
+    storm.selected = !storm.selected;
+
+    var index = stormList.indexOf(storm);
+
+    if (storm.selected) {
+      selectedStorms[index] = true;
+    } else {
+      selectedStorms[index] = false;
+    }
+
+    DataService.updateAvailabilityWindow();
+    DataService.updateAvailability();
+
+  }
+
+  DataService.selectFlight = function(flight) {
+
+    flight.selected = !flight.selected;
+
+    var index = flightList.indexOf(flight);
+
+    if (flight.selected) {
+      selectedFlights[index] = true;
+    } else {
+      selectedFlights[index] = false;
+    }
+
+    DataService.updateAvailabilityWindow();
+    DataService.updateAvailability();
+
+  }  
 
   DataService.loadStormData = function() {
     
@@ -130,7 +175,7 @@ hs3.factory('DataService', ['$http', function($http) {
 
   }
 
-  DataService.updateAvailabilityWindow = function(selectedFlights, selectedStorms) {
+  DataService.updateAvailabilityWindow = function() {
     
     var minTime = null;
     var maxTime = null;
