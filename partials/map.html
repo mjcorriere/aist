@@ -2,15 +2,38 @@
   <div id='mapmap'>
   </div>
   <div id='timeline'>
-    <slider 
-      floor="{{limits.min}}"
-      ceiling="{{limits.max}}"
-      ng-model-low="o.lower"
-      ng-model-high="o.upper"
-      ng-model-mid="o.mid"
-      buffer="5"
-      translate="formatter"
-      redraw="redraw">
-    </slider>
+    <h2>Map Controls</h2>
+    <div class='control-row'>
+      <h4>Area of Interest</h4>
+      <button class='myButton' ng-click='startDrawing()'>Draw</button>
+      <button class='myButton' ng-click='removePolygon()'>Remove</button>
+    </div>
+    <div class='control-row'>
+      <h4>Date Range</h4>
+      <b>{{formatter(o.lower)}}</b> to <b>{{formatter(o.upper)}}</b>
+      <div class='slider-container'>
+        <slider 
+          floor="{{limits.min}}"
+          ceiling="{{limits.max}}"
+          ng-model-low="o.lower"
+          ng-model-high="o.upper"
+          ng-model-mid="o.mid"
+          buffer="5"
+          translate="formatter"
+          redraw="redraw">
+        </slider>
+      </div>
+    </div>
+    <div class='control-row'>
+      <h4>Sensor Type</h4>
+      <input type='checkbox' id='one'><label for='one'>AIRS</label>
+      <input type='checkbox' id='two'><label for='two'>GPM</label>
+      <input type='checkbox' id='three'><label for='three'>AQUA</label>
+      <input type='checkbox' id='four'><label for='four'>Sensor4</label>
+    </div>
+    <div class='control-row'>
+      <h4>Request</h4>
+      <button class='myButton' ng-click='makeRequest()'>Request Data</button>
+    </div>
   </div>  
 </div>

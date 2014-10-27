@@ -1,11 +1,40 @@
-hs3.controller('MapCtrl', ['$scope', 'DataService', 'MapService', function($scope, DataService, MapService) {
+hs3.controller('MapCtrl', 
+  ['$scope', '$location', '$http', 'DataService', 'MapService', 
+  function($scope, $location, $http, DataService, MapService) {
+  
   initializeMap();
+
+  google.maps.event.addListener(drawingManager, 'polygoncomplete', polygonComplete);
 
   $scope.stormList = [];
   $scope.flightList = [];
 
   $scope.limits = {};
   $scope.o = {};
+
+  $scope.polygonDrawn = false;
+  $scope.drawingPolygon = false;
+
+  $scope.polygon = null;
+
+  $scope.makeRequest = function() {
+
+    DataService.getDatasets()
+      .then(function() {
+        $location.path('/request');
+      });
+
+  }
+
+  $scope.startDrawing = function() {
+    drawingManager.setDrawingMode(google.maps.drawing.OverlayType.POLYGON);
+    $scope.drawingPolygon = true;
+  }
+
+  $scope.removePolygon = function() {
+    $scope.polygon.setPath([]);
+    $scope.polygon.setMap(null);
+  }
 
   $scope.formatter = function(value) {
     var date = new Date(parseInt(value)).toLocaleDateString();
@@ -16,6 +45,15 @@ hs3.controller('MapCtrl', ['$scope', 'DataService', 'MapService', function($scop
     console.log('redrawing map');
     MapService.drawSelectedStorms();
     MapService.drawSelectedFlights();
+  }
+
+  function polygonComplete(polygon) {
+    drawingManager.setDrawingMode(null);
+    console.log('polygon complete');
+    $scope.polygon = polygon;
+    $scope.polygonDrawn = true;
+    $scope.drawingPolygon = false;
+    $scope.$apply();
   }
 
   loadData();

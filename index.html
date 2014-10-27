@@ -3,25 +3,30 @@
     <title></title>
     <link rel='stylesheet' href='css/style.css'>
     <link rel='stylesheet' href='css/angular-slider.css'>
+    <link rel='stylesheet' href='css/ng-table.css'>
   </head>
+
   <body ng-app='hs3'>
     
     <!-- Angular Magic -->
-    <div id='container'>
-      <div id='mapCanvas' ng-include="'partials/map.html'"></div>
-      <div id='selectionMenu' ng-include="'partials/selectionmenu.html'"></div>
+    <div id='container' ng-view>
+<!--       <div id='mapCanvas' ng-include="'partials/map.html'"></div>
+      <div id='selectionMenu' ng-include="'partials/selectionmenu.html'"></div> -->
     </div>
     
     <!-- Includes -->
     <script type='text/javascript' src='js/angular.min.js'></script>
     <script type='text/javascript' src='js/angular-route.min.js'></script>
     <script src='js/angular-sanitize.min.js'></script>
-    <script src='js/angular-slider.js'></script>  
+    <script src='js/angular-slider.js'></script>
+    <script src='js/ng-table.js'></script>
+
     <script type='text/javascript' src='app/app.js'></script>
     <script type='text/javascript' src='app/dataservice.js'></script>
     <script type='text/javascript' src='app/mapservice.js'></script>
     <script type='text/javascript' src='app/renderservice.js'></script>
     <script type='text/javascript' src='app/selectionctrl.js'></script>
+    <script type='text/javascript' src='app/requestcontroller.js'></script>
     <script type='text/javascript' src='app/mapctrl.js'></script>
     <script type='text/javascript' src='https://maps.googleapis.com/maps/api/js?v=3.0&libraries=drawing'></script>
 
@@ -32,24 +37,18 @@
 
       function initializeMap() {
         var mapOptions = {
-          center: { lat: 32.4729, lng: -45.0737},
+          center: { lat: 32, lng: -45},
           zoom: 4,
           disableDefaultUI: true
         };
-        map = new google.maps.Map(document.getElementById('mapmap'),
-            mapOptions);
+        map = new google.maps.Map(document.getElementById('mapmap'), mapOptions);
 
         drawingManager = new google.maps.drawing.DrawingManager();
+        drawingManager.setOptions({ drawingControl: false });
         drawingManager.setMap(map);
 
-        drawingManager.setOptions({
-          drawingControlOptions: {
-            position: google.maps.ControlPosition.TOP_RIGHT,
-            drawingModes: [google.maps.drawing.OverlayType.POLYGON]
-          }
-        });
-
       }
+
     </script>    
 
   </body>

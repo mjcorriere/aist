@@ -26,8 +26,22 @@ hs3.factory('DataService', ['$http', function($http) {
     "upper" : null,
     "mid"   : null
   };
+
+  var datasets = [];
  
   var DataService = {};
+
+  DataService.getDatasets = function() {
+        // datasets?keyword=AMSU&start=2014-01-03T12:00:00&end=2014-01-04T12:00:00&geotype=bb&coords=116.904,24.527,117.680,39.834    
+    var servletUrl = "http://mldlinvm.draper.com:8080/aistservlet/";
+    var debugRequest = "http://mldlinvm.draper.com:8080/aistservlet/datasets?keyword=AMSU&start=2014-01-03T12:00:00&end=2014-01-04T12:00:00&geotype=bb&coords=116.904,24.527,117.680,39.834";
+
+    return $http.get(debugRequest)
+      .then(function(response) {
+        console.log(response);
+        datasets = response.data;
+      });
+  }
 
   DataService.isStormDataParsed = function() {
     return stormDataParsed;
