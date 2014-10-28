@@ -31,16 +31,39 @@ hs3.factory('DataService', ['$http', function($http) {
  
   var DataService = {};
 
-  DataService.getDatasets = function() {
+  DataService.requestDatasets = function(_keyword, _startTime, _endTime, _coordinates) {
         // datasets?keyword=AMSU&start=2014-01-03T12:00:00&end=2014-01-04T12:00:00&geotype=bb&coords=116.904,24.527,117.680,39.834    
     var servletUrl = "http://mldlinvm.draper.com:8080/aistservlet/";
-    var debugRequest = "http://mldlinvm.draper.com:8080/aistservlet/datasets?keyword=AMSU&start=2014-01-03T12:00:00&end=2014-01-04T12:00:00&geotype=bb&coords=116.904,24.527,117.680,39.834";
+    var debugRequest = "http://mldlinvm.draper.com:8080/aistservlet/datasets?start=1999-01-03T12:00:00&end=1999-08-23T12:00:00&geotype=bb&coords=116.904,24.527,141.680,39.834";
 
-    return $http.get(debugRequest)
+    // Format the startTimes
+
+    console.log('Request parameters:', _keyword, _startTime, _endTime, _coordinates)
+
+    var keyword     = _keyword      ? _keyword                           : '';
+    var startTime   = _startTime    ? new Date(_startTime).toISOString() : '';
+    var endTime     = _endTime      ? new Date(_endTime).toISOString()   : '';
+    var coordinates = _coordinates  ? _coordinates.join()                : '';
+
+    var request = servletUrl 
+                    + 'datasets?start=' + startTime 
+                    + '&end=' + endTime 
+                    + '&geotype=poly&coords=' + coordinates;
+
+
+    return $http.get(request)
       .then(function(response) {
         console.log(response);
-        datasets = response.data;
+        datasets = response.data.objects;
+        console.log(datasets);
+      },
+      function() {
+        console.log('failed. continuing');
       });
+  }
+
+  DataService.getDatasets = function() {
+    return datasets;
   }
 
   DataService.isStormDataParsed = function() {

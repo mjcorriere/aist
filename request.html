@@ -1,3 +1,15 @@
-<div ng-controller='RequestController'>
-  hello
+<div id='results-table' ng-controller='RequestController'>
+
+  <h1> Results </h1>
+  <table ng-table="tableParams" show-filter="true" class="table">
+    <tr ng-repeat="row in $data">
+      <td data-title="'Title'" 
+        sortable="'title'" 
+        filter="{ 'title': 'text' }">
+        {{row.title}}</td>
+      <td data-title="'Processing Level'" sortable="'processing_level_id'" filter="{ 'processing_level_id': 'text' }">{{row.processing_level_id}}</td>
+      <td data-title="'Data Center'">{{row.data_center}}</td>
+    </tr>
+  </table>    
+
 </div>

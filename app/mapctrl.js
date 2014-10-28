@@ -19,7 +19,29 @@ hs3.controller('MapCtrl',
 
   $scope.makeRequest = function() {
 
-    DataService.getDatasets()
+    var keyword, startTime, endTime, coordinates = [];
+
+    keyword = 'airs';
+    
+    startTime = parseInt($scope.o.lower);
+    endTime = parseInt($scope.o.upper);
+
+    console.log('start', startTime, 'end', endTime);
+
+    if ($scope.polygon) {
+
+      var raw = $scope.polygon.getPath().getArray();
+
+      for (var i = 0; i < raw.length; i++) {
+        coordinates.push(raw[i].lat());
+        coordinates.push(raw[i].lng());
+      }
+
+      console.log(coordinates);
+      
+    }
+
+    DataService.requestDatasets(keyword, startTime, endTime, coordinates)
       .then(function() {
         $location.path('/request');
       });
