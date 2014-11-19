@@ -40,12 +40,19 @@
         var mapOptions = {
           center: { lat: 32, lng: -45},
           zoom: 4,
-          disableDefaultUI: true
+          disableDefaultUI: true,
+          zoomControl: true
         };
         map = new google.maps.Map(document.getElementById('mapmap'), mapOptions);
 
         drawingManager = new google.maps.drawing.DrawingManager();
-        drawingManager.setOptions({ drawingControl: false });
+        drawingManager.setOptions({ 
+          drawingControl: false
+          , polygonOptions: {
+            editable: true
+            , draggable: true
+          }
+        });
         drawingManager.setMap(map);
 
       }

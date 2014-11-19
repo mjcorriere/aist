@@ -9,7 +9,7 @@ lngCol  = 3
 
 timeFormat = '%Y-%m-%dT%H:%M:%S'
 
-hoursThreshhold = .5
+hoursThreshhold = .1
 secondsThreshold = hoursThreshhold * 60 * 60
 parsedFiles = {}
 

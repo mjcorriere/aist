@@ -352,7 +352,6 @@ hs3.factory('DataService', ['$http', function($http) {
     }
     // console.log(stormList);
 
-    // REPLACE WITH ACTUAL PARSING OF ACTUAL DATA;
     return DataService.getStormList();
   }
 

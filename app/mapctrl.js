@@ -17,11 +17,13 @@ hs3.controller('MapCtrl',
 
   $scope.polygon = null;
 
+  $scope.sensorType = '';
+
   $scope.makeRequest = function() {
 
     var keyword, startTime, endTime, coordinates = [];
 
-    keyword = 'airs';
+    keyword = $scope.sensorType;
     
     startTime = parseInt($scope.o.lower);
     endTime = parseInt($scope.o.upper);

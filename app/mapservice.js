@@ -95,9 +95,19 @@ hs3.factory('MapService', ['RenderService', 'DataService', '$q', function(Render
       var isSelected = selectedFlights[i];
 
       if (isSelected) {
+        
         var options = RenderService.draw(flightList[i], selectedWindow);
         flightTracks[i].polyline.setOptions(options.polylineOptions);
-        flightTracks[i].marker.setOptions(options.markerOptions);
+
+        if (options.polylineOptions.map == null) {
+          flightTracks[i].marker.setMap(null);
+        } else {
+          if (flightTracks[i].marker.map == null) {
+            flightTracks[i].marker.setMap(options.markerOptions.map);
+          }
+          flightTracks[i].marker.setPosition(options.markerOptions.position);          
+        }
+
       } else {
         flightTracks[i].polyline.setMap(null);
         flightTracks[i].marker.setMap(null);
