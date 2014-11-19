@@ -1,15 +1,44 @@
 <div id='results-table' ng-controller='RequestController'>
 
+  <script type='text/ng-template' id='dataModal.html'>
+        <div class="modal-header">
+            <h3 class="modal-title">Im a modal!</h3>
+        </div>
+        <div class="modal-body">
+G T F O<br>
+Message: {{message}}
+IDDDDD: {{id}}
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" ng-click="ok()">OK</button>
+            <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+        </div>
+  </script>
+
   <h1> Results </h1>
   <table ng-table="tableParams" show-filter="true" class="table">
     <tr ng-repeat="row in $data">
       <td data-title="'Title'" 
         sortable="'title'" 
         filter="{ 'title': 'text' }">
-        {{row.title}}</td>
-      <td data-title="'Processing Level'" sortable="'processing_level_id'" filter="{ 'processing_level_id': 'text' }">{{row.processing_level_id}}</td>
-      <td data-title="'Data Center'">{{row.data_center}}</td>
+        {{row.title}}
+      </td>
+      <td data-title="'Processing Level'" 
+        sortable="'processing_level_id'" 
+        filter="{ 'processing_level_id': 'text' }">
+          {{row.processing_level_id}}
+      </td>
+      <td data-title="'Granule ID'">
+        {{row.id}}
+      </td>
+
+      <td data-title="'Download'">
+        <button class='btn' ng-click="download(row.id)">Download</button>
+      </td>
     </tr>
-  </table>    
+  </table>
+
+
 
 </div>
+

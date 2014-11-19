@@ -1,5 +1,5 @@
 
-var hs3 = angular.module('hs3', ['ngRoute', 'ui.slider', 'ngSanitize', 'ngTable']);
+var hs3 = angular.module('hs3', ['ngRoute', 'ui.slider', 'ui.bootstrap', 'ngSanitize', 'ngTable']);
 
 hs3.config(function($routeProvider) {
   

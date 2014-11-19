@@ -1,6 +1,6 @@
 hs3.controller('RequestController', 
-  ['$scope', '$filter', 'DataService', 'ngTableParams', 
-    function($scope, $filter, DataService, ngTableParams) {
+  ['$scope', '$filter', '$modal', 'DataService', 'ngTableParams', 
+    function($scope, $filter, $modal, DataService, ngTableParams) {
 
     //TODO: Handle the case where the user starts on / refreshes this page
     
@@ -27,8 +27,25 @@ hs3.controller('RequestController',
                     $filter('orderBy')(filteredData, params.orderBy()) :
                     data;
             params.total(orderedData.length); // set total for recalc pagination
-            $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+            $defer.resolve(orderedData.slice((params.page() - 1) 
+                            * params.count(), params.page() * params.count()));
         }
-    });  
+    });
 
+    $scope.download = function(granule_id) {
+
+        var modalInstance = $modal.open({
+            templateUrl : 'dataModal.html',
+            controller  : 'ModalController',
+            size        : 'lg'
+        });
+
+    }
+
+}]);
+
+hs3.controller('ModalController',
+  ['$scope', '$modalInstance', 
+    function($scope, $modalInstance) {
+      $scope.message = 'GTFOOOOOO';      
 }]);
