@@ -36,7 +36,7 @@ hs3.service('RenderService', [function() {
 
   var RenderService = {}
 
-  RenderService.draw = function(trackable, timeWindow) {
+  RenderService.draw = function(trackable, timeWindow, color) {
 
     var options, markerOptions;
 
@@ -125,8 +125,9 @@ hs3.service('RenderService', [function() {
       , "map"       : map
     };
 
-    polylineOptions.path = coordinates;
-    polylineOptions.map  = map;
+    polylineOptions.path        = coordinates;
+    polylineOptions.strokeColor = color;
+    polylineOptions.map         = map;
 
     options = {
       "polylineOptions" : polylineOptions
@@ -213,22 +214,3 @@ hs3.service('RenderService', [function() {
   return RenderService;
 
 }]);
-
-// Trackable.prototype.setColor = function(color) {
-//   this.color = color;
-//   this.polyLineOptions.strokeColor = this.color;
-//   this.pointIcon.fillColor = this.color;
-
-//   this.polyLine.setOptions(this.polyLineOptions);
-//   for(i = 0; i < this.markers.length; i++) {
-//     this.markers[i].setIcon(this.pointIcon);
-//   }
-// }
-
-// Trackable.prototype.setVisible = function(visibility) {
-//   this.polyLine.setVisible(visibility);
-//   this.positionMarker.setVisible(visibility);
-//   for (i = 0; i < this.markers.length; i++) {
-//     this.markers[i].setVisible(visibility);
-//   }
-// }
