@@ -50,7 +50,8 @@ hs3.factory('DataService', ['$http', function($http) {
 
     var request = servletUrl 
                     + 'datasets'
-                    + '?start='   + startTime 
+                    + '?keyword=' + keyword
+                    + '&start='   + startTime 
                     + '&end='     + endTime 
                     + '&geotype=' + 'poly'
                     + '&coords='  + coordinates;
