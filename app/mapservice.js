@@ -24,10 +24,7 @@ hs3.factory('MapService', ['RenderService', 'DataService', '$q', function(Render
       , map           : null
     };
 
-//    var imgIcon = 'https://google-developers.appspot.com/maps/documentation/javascript/examples/full/images/beachflag.png';
-
     return icon;
-    // return imgIcon;
 
   }
 
