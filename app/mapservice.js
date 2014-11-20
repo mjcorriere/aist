@@ -11,11 +11,11 @@ hs3.factory('MapService', ['RenderService', 'DataService', '$q', function(Render
 
   var MapService      = {};
 
-  function createIcon() {
+  function createIcon(color) {
 
     var icon            = {
       path            : google.maps.SymbolPath.CIRCLE
-      , fillColor     : randomColor()
+      , fillColor     : color
       , fillOpacity   : 1.0
       , strokeColor   : 'rgb(0, 0, 0)'
       , strokeWeight  : 2
@@ -33,15 +33,14 @@ hs3.factory('MapService', ['RenderService', 'DataService', '$q', function(Render
 
   MapService.createPolyLines = function() {
 
-    ///******************************
-
     console.log('initializing storms/flights');
 
     for (var i = 0; i < stormList.length; i++) {
 
       stormTracks[i] = {
         "polyline"  : new google.maps.Polyline()
-        , "marker"  : new google.maps.Marker({ "icon" : createIcon() })
+        , "marker"  : new google.maps.Marker({ "icon" : createIcon(stormList[i].color) })
+        , "color"   : stormList[i].color
       };
 
     }
@@ -50,7 +49,8 @@ hs3.factory('MapService', ['RenderService', 'DataService', '$q', function(Render
 
       flightTracks[i] = {
         "polyline"  : new google.maps.Polyline()
-        , "marker"  : new google.maps.Marker({ "icon" : createIcon() })
+        , "marker"  : new google.maps.Marker({ "icon" : createIcon(flightList[i].color) })
+        , "color"   : flightList[i].color
       };
 
     }    
@@ -65,8 +65,10 @@ hs3.factory('MapService', ['RenderService', 'DataService', '$q', function(Render
       var isSelected = selectedStorms[i];
 
       if (isSelected) {
+
+        var color = stormTracks[i].color;
         
-        var options = RenderService.draw(stormList[i], selectedWindow);
+        var options = RenderService.draw(stormList[i], selectedWindow, color);
         stormTracks[i].polyline.setOptions(options.polylineOptions);
 
         if (options.polylineOptions.map == null) {
@@ -95,8 +97,10 @@ hs3.factory('MapService', ['RenderService', 'DataService', '$q', function(Render
       var isSelected = selectedFlights[i];
 
       if (isSelected) {
+
+        var color = flightTracks[i].color;
         
-        var options = RenderService.draw(flightList[i], selectedWindow);
+        var options = RenderService.draw(flightList[i], selectedWindow, color);
         flightTracks[i].polyline.setOptions(options.polylineOptions);
 
         if (options.polylineOptions.map == null) {
@@ -139,9 +143,59 @@ hs3.factory('MapService', ['RenderService', 'DataService', '$q', function(Render
    
   }
 
+  function ColorGenerator() {
 
-  function randomColor() {
-    
+    this.colors = [
+     'rgb(153, 15, 15)',
+     'rgb(178, 44, 44)',
+     'rgb(204, 81, 81)',
+     'rgb(229, 126, 126)',
+     'rgb(255, 178, 178)',
+     'rgb(153, 84, 15)',
+     'rgb(178, 111, 44)',
+     'rgb(204, 142, 81)',
+     'rgb(229, 177, 126)',
+     'rgb(255, 216, 178)',
+     'rgb(107, 153, 15)',
+     'rgb(133, 178, 44)',
+     'rgb(163, 204, 81)',
+     'rgb(195, 229, 126)',
+     'rgb(229, 255, 178)',
+     'rgb(15, 107, 153)',
+     'rgb(44, 133, 178)',
+     'rgb(81, 163, 204)',
+     'rgb(126, 195, 229)',
+     'rgb(178, 229, 255)',
+     'rgb(38, 15, 153)',
+     'rgb(66, 44, 178)',
+     'rgb(101, 81, 204)',
+     'rgb(143, 126, 229)',
+     'rgb(191, 178, 255)'
+   ];
+
+   this.availableColors = this.colors.slice(0);
+
+  }
+
+  ColorGenerator.prototype.getPalletteColor = function() {
+
+    if (this.availableColors.length == 0) {
+      this.availableColors = this.colors.slice(0);
+    }
+
+    var length = this.availableColors.length;
+
+    var randomIndex = Math.floor(Math.random() * length);
+
+    var color = this.availableColors[randomIndex];
+    this.availableColors.splice(randomIndex, 1);
+
+    return color;
+
+  }
+
+  ColorGenerator.prototype.getRandomColor = function() {
+
     var red   = Math.floor(255 * Math.random())
       , green = Math.floor(255 * Math.random())
       , blue  = Math.floor(255 * Math.random())
@@ -153,8 +207,8 @@ hs3.factory('MapService', ['RenderService', 'DataService', '$q', function(Render
             + blue  + ')';
 
     return color;
-
-  }    
+ 
+  }
 
   loadData();
 

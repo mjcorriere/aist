@@ -330,6 +330,8 @@ hs3.factory('DataService', ['$http', function($http) {
   function parseStormData(response) {
     // console.log('parsing hurricane data');
 
+    var colorGenerator = new ColorGenerator();
+
     if (!stormDataParsed) {
       stormDataParsed = true;
       var data = response.data;
@@ -350,6 +352,7 @@ hs3.factory('DataService', ['$http', function($http) {
           , "position"  : []
           , "startTime" : null
           , "endTime"   : null
+          , "color"     : colorGenerator.getRandomColor()
         };
 
         for(var j = i + 1; j < i + numPoints + 1; j++) {
@@ -382,8 +385,8 @@ hs3.factory('DataService', ['$http', function($http) {
 
   function parseFlightData(response) {
 
-    console.log('parsing flight data');
-    console.log(response);
+    var colorGenerator = new ColorGenerator();
+
     if (!flightDataParsed) {
 
       flightDataParsed = true;
@@ -408,6 +411,7 @@ hs3.factory('DataService', ['$http', function($http) {
           , "endTime"   : null
           , "selected"  : false
           , "available" : true
+          , "color"     : colorGenerator.getRandomColor()
         };
 
         for(var j = i + 1; j < i + numPoints + 1; j++) {
@@ -444,6 +448,73 @@ hs3.factory('DataService', ['$http', function($http) {
   function handleError(response) {
     // console.log('An unknown error occured:',response);
   }
+
+  function ColorGenerator() {
+
+    this.colors = [
+     'rgb(153, 15, 15)',
+     'rgb(178, 44, 44)',
+     'rgb(204, 81, 81)',
+     'rgb(229, 126, 126)',
+     'rgb(255, 178, 178)',
+     'rgb(153, 84, 15)',
+     'rgb(178, 111, 44)',
+     'rgb(204, 142, 81)',
+     'rgb(229, 177, 126)',
+     'rgb(255, 216, 178)',
+     'rgb(107, 153, 15)',
+     'rgb(133, 178, 44)',
+     'rgb(163, 204, 81)',
+     'rgb(195, 229, 126)',
+     'rgb(229, 255, 178)',
+     'rgb(15, 107, 153)',
+     'rgb(44, 133, 178)',
+     'rgb(81, 163, 204)',
+     'rgb(126, 195, 229)',
+     'rgb(178, 229, 255)',
+     'rgb(38, 15, 153)',
+     'rgb(66, 44, 178)',
+     'rgb(101, 81, 204)',
+     'rgb(143, 126, 229)',
+     'rgb(191, 178, 255)'
+   ];
+
+   this.availableColors = this.colors.slice(0);
+
+  }
+
+  ColorGenerator.prototype.getPalletteColor = function() {
+
+    if (this.availableColors.length == 0) {
+      this.availableColors = this.colors.slice(0);
+    }
+
+    var length = this.availableColors.length;
+
+    var randomIndex = Math.floor(Math.random() * length);
+
+    var color = this.availableColors[randomIndex];
+    this.availableColors.splice(randomIndex, 1);
+
+    return color;
+
+  }
+
+  ColorGenerator.prototype.getRandomColor = function() {
+
+    var red   = Math.floor(255 * Math.random())
+      , green = Math.floor(255 * Math.random())
+      , blue  = Math.floor(255 * Math.random())
+    ;
+
+    var color = 'rgb('
+            + red   + ','
+            + green + ','
+            + blue  + ')';
+
+    return color;
+ 
+  }  
 
   return DataService;
 
