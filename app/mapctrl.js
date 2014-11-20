@@ -39,6 +39,11 @@ hs3.controller('MapCtrl',
         coordinates.push(raw[i].lng());
       }
 
+      // Add the first coordinate as the last coordinate to close the polygon
+
+      coordinates.push(raw[0].lat());
+      coordinates.push(raw[0].lng());
+
       console.log(coordinates);
       
     }

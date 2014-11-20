@@ -53,7 +53,7 @@ hs3.factory('DataService', ['$http', function($http) {
                     + '?keyword=' + keyword
                     + '&start='   + startTime 
                     + '&end='     + endTime 
-                    + '&geotype=' + 'poly'
+                    + '&geotype=' + 'polygon'
                     + '&coords='  + coordinates;
 
     console.log('request: ', request);
@@ -77,7 +77,7 @@ hs3.factory('DataService', ['$http', function($http) {
                     + '?id='      + granuleID
                     + '&start='   + startTime
                     + '&end='     + endTime
-                    + '&geotype=' + 'poly'
+                    + '&geotype=' + 'polygon'
                     + '&coords='  + coordinates; 
 
     $http.get(request)
