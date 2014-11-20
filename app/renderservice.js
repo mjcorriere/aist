@@ -4,18 +4,21 @@ hs3.service('RenderService', [function() {
   var markers         = [];
   var positionMarker  = null;
   var point           = null;
-  var color           = 'rgb(225, 0, 0)';
+  var defaultColor    = 'rgb(225, 0, 0)';
+  var disabledColor   = 'rgb(225, 225, 225)';
+  var strokeOpacity   = 0.9;
+  var disabledOpacity = 0.5;
   var polyLine        = new google.maps.Polyline();
   var pointIcon       = {
     path: google.maps.SymbolPath.CIRCLE
-    , fillColor     : color
+    , fillColor     : defaultColor
     , fillOpacity   : 1.0
     , strokeWeight  : 0
     , scale         : 4.0
   };  
   var icon            = {
     path: google.maps.SymbolPath.CIRCLE
-    , fillColor     : color
+    , fillColor     : defaultColor
     , fillOpacity   : 1.0
     , strokeColor   : 'rgb(0, 0, 0)'
     , strokeWeight  : 2
@@ -28,11 +31,11 @@ hs3.service('RenderService', [function() {
     , geodesic      : true
     , icons         : null
     , map           : map
-    , strokeColor   : color
-    , strokeOpacity : 0.9
+    , strokeColor   : defaultColor
+    , strokeOpacity : strokeOpacity
     , strokeWeight  : 2.0
     , visible       : true
-  }; 
+  };
 
   var RenderService = {}
 
@@ -60,14 +63,17 @@ hs3.service('RenderService', [function() {
         "map"       : null
       };
 
-      polylineOptions.map  = null;
-
-      // polyLine.setOptions(polylineOptions);
+      polylineOptions.path          = position;
+      polylineOptions.strokeOpacity = disabledOpacity;
+      polylineOptions.map           = map;
+      polylineOptions.strokeColor   = disabledColor;
 
       options = {
         "polylineOptions" : polylineOptions
         , "markerOptions" : markerOptions
       };
+
+      console.log('Returning greyed path for trackable: ', trackable.name);
 
       return options;
 
@@ -125,14 +131,17 @@ hs3.service('RenderService', [function() {
       , "map"       : map
     };
 
-    polylineOptions.path        = coordinates;
-    polylineOptions.strokeColor = color;
-    polylineOptions.map         = map;
+    polylineOptions.path          = coordinates;
+    polylineOptions.strokeColor   = color;
+    polylineOptions.strokeOpacity = strokeOpacity;
+    polylineOptions.map           = map;
 
     options = {
       "polylineOptions" : polylineOptions
       , "markerOptions" : markerOptions
     };
+
+    console.log('Returning regular color for trackable: ', trackable.name);
 
     return options;
 
