@@ -50,7 +50,6 @@ hs3.service('RenderService', [function() {
       || !timeWindow.hasOwnProperty('mid')) {
       return null;
     }
-    // console.log('DRAW:');
     
     var position, startIndex, endIndex, startPosition, endPosition, time;
 
@@ -104,12 +103,8 @@ hs3.service('RenderService', [function() {
     var p = getPosition(trackable, time);
 
     var subTrack = position.slice(startIndex + 1, endIndex + 1);
-    // console.log('subTrack: ', subTrack);
-    // console.log('subTrack length: ', subTrack.length);
 
     var coordinates = new Array(subTrack.length + 2);
-    // console.log('coordinates length: ', coordinates.length);
-    // deleteMarkers();
 
     for(i = 0; i < coordinates.length; i++) {
       // console.log('i: ', i);
@@ -156,19 +151,14 @@ hs3.service('RenderService', [function() {
       , i         = Math.floor((stop - start) / 2)
     ;
 
-    // console.log(start, stop, i, found);
-
-    // if ((time < track[0].time) || (time > track[track.length - 1].time)) {
-    //  console.log('Value out of bounds');
-    //  return null;
     if (time < position[0].time) {
       return 0;
     } else if (time > (position[position.length - 2].time)) {
       return position.length - 2;
     } else {
-      //console.log('Searching');
+
       while (!found) {
-        //console.log('start:' + start + ' stop:' + stop + ' i:' + i);
+
         if ((time >= position[i].time) && (time <= position[i+1].time)) {
           found = true;
         } else if (time < position[i].time) {
@@ -182,7 +172,6 @@ hs3.service('RenderService', [function() {
       }
     }
 
-    //console.log('found at: ' + i);
     return i;
   
   }
