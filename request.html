@@ -1,20 +1,4 @@
 <div id='results-table' ng-controller='RequestController'>
-
-  <script type='text/ng-template' id='dataModal.html'>
-        <div class="modal-header">
-            <h3 class="modal-title">Im a modal!</h3>
-        </div>
-        <div class="modal-body">
-G T F O<br>
-Message: {{message}}
-IDDDDD: {{id}}
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-primary" ng-click="ok()">OK</button>
-            <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
-        </div>
-  </script>
-
   <h1> Results </h1>
   <table ng-table="tableParams" show-filter="true" class="table">
     <tr ng-repeat="row in $data">
@@ -38,7 +22,8 @@ IDDDDD: {{id}}
     </tr>
   </table>
 
+<h1> DEBUG </h1>
 
+  <button class='btn' ng-click="download('granny_id')">Download</button>
 
 </div>
-
