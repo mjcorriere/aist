@@ -4,6 +4,7 @@
       ng-click='selectFlight(flight)'
       ng-class="{'selected': flight.selected, 'disabled': !flight.available}">
     {{flight.name}} 
+    <span class='color-box' style="background-color: {{flight.color}}"></span>
     <span style='float: right; margin-right: 20px; color: #999'>{{flight.startTime.toLocaleDateString()}}</span>
   </p>
   <h2>Storms</h2>
@@ -11,6 +12,7 @@
       ng-click="selectStorm(storm)"
       ng-class="{'selected': storm.selected, 'disabled': !storm.available}">
     {{storm.name}}
+  <span class='color-box' style="background-color: {{storm.color}}"></span>
   <span style='float: right; margin-right: 20px; color: #999'>{{storm.startTime.toLocaleDateString()}}</span>    
   </p>
 </div>
