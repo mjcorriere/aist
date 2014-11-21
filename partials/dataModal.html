@@ -4,10 +4,27 @@
         <h3 class="modal-title">Data Granule {{id}}</h3>
     </div>
     <div class="modal-body">
-
+        <table class='table'>
+            <thead>
+                <tr>
+                    <th>Granule Filename</th>
+                    <th>Granule Size (mb)</th>
+                    <th>Download link</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat='granule in granules'>
+                    <td>{{granule.producer_granule_id}}</td>
+                    <td>{{granule.granule_size}}</td>
+                    <td>
+                        <a class='btn btn-primary' href="{{granule.link}}">Download</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
 
     </div>
     <div class="modal-footer">
-        <button class="btn btn-primary" ng-click="close()">Close</button>
+        <button class="btn btn-warning" ng-click="close()">Close</button>
     </div>
 </div>

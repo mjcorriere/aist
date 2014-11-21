@@ -34,25 +34,47 @@ hs3.controller('RequestController',
 
   $scope.download = function(granule_id) {
 
-    console.log('GRANULE GODAMN IDA', granule_id);
+    DataService.requestGranules(granule_id)
+      .then(function() {
 
-    var modalOptions = {
-      templateUrl : 'partials/dataModal.html',
-      controller  : 'ModalController',
-      resolve     : {
-          id : function() {
-              return granule_id;
+        var granules = DataService.getGranules();
+
+        var modalOptions = {
+          templateUrl : 'partials/dataModal.html',
+          controller  : 'ModalController',
+          size        : 'lg',
+          resolve     : {
+              id : function() {
+                  return granule_id;
+              },
+              granules : function() {
+                return granules;
+              }
           }
-      }
-    };
+        };
 
-    var modalInstance = $modal.open(modalOptions);
+        var modalInstance = $modal.open(modalOptions);        
+
+      })
+
+
 
   }
 
 }]);
 
-hs3.controller('ModalController', ['$scope', '$modalInstance', 'id',
-  function($scope, $modalInstance, id) {
-    $scope.id = id;  
+hs3.controller('ModalController', ['$scope', '$modalInstance', 'id', 'granules',
+  function($scope, $modalInstance, id, granules) {
+
+    for(var i = 0; i < granules.length; i++) {
+      granules[i].granule_size = parseInt(granules[i].granule_size);
+    }
+
+    $scope.id       = id;
+    $scope.granules = granules;
+
+    $scope.close = function() {
+      $modalInstance.close();
+    }
+
 }]);

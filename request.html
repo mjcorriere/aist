@@ -7,17 +7,11 @@
         filter="{ 'title': 'text' }">
         {{row.title}}
       </td>
-<!--       <td data-title="'Processing Level'" 
-        sortable="'processing_level_id'" 
-        filter="{ 'processing_level_id': 'text' }">
-          {{row.processing_level_id}}
-      </td> -->
       <td data-title="'Granule ID'">
         {{row.id}}
       </td>
-
-      <td data-title="'Download'">
-        <button class='btn' ng-click="download(row.id)">Download</button>
+      <td data-title="'Request Granules'">
+        <button class='btn' ng-click="download(row.id)">Request</button>
       </td>
     </tr>
   </table>

@@ -119,6 +119,10 @@ html, body {
   color: #000;
 }
 
+#data-modal table {
+  color: #000;
+}
+
 #results-table {
   padding: 30px;
   color: #000;

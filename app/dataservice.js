@@ -32,6 +32,7 @@ hs3.factory('DataService', ['$http', function($http) {
   var keyword, startTime, endTime, coordinates;
 
   var datasets = [];
+  var granules = [];
  
   var DataService = {};
 
@@ -80,15 +81,24 @@ hs3.factory('DataService', ['$http', function($http) {
                     + '&geotype=' + 'polygon'
                     + '&coords='  + coordinates; 
 
-    $http.get(request)
+    return $http.get(request)
       .then(function(response) {
+        console.log('Data retrieved');
         console.log(response);
+        granules = response.data.objects;
+      },
+      function() {
+        console.log('Data request failed.');
       });
 
   }
 
   DataService.getDatasets = function() {
     return datasets;
+  }
+
+  DataService.getGranules = function() {
+    return granules;
   }
 
   DataService.isStormDataParsed = function() {
