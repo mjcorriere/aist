@@ -34,15 +34,17 @@ hs3.controller('MapCtrl',
 
       var raw = $scope.polygon.getPath().getArray();
 
+      // ECHO API takes coordinates in (lng, lat) order
+
       for (var i = 0; i < raw.length; i++) {
-        coordinates.push(raw[i].lat());
         coordinates.push(raw[i].lng());
+        coordinates.push(raw[i].lat());
       }
 
-      // Add the first coordinate as the last coordinate to close the polygon
+      // ECHO API requires first coordinate as the last coordinate to close the polygon
 
-      coordinates.push(raw[0].lat());
       coordinates.push(raw[0].lng());
+      coordinates.push(raw[0].lat());
 
       console.log(coordinates);
       
