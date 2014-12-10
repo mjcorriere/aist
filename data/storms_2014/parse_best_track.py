@@ -30,15 +30,21 @@ for f in files:
 
   reformat = []
   lines    = 0
+  prevTime = 0
 
   for line in csvData:
-
-    lines += 1
 
     time = line[TIME_COL].strip()
     lat  = line[LAT_COL].strip()
     lng  = line[LNG_COL].strip()
     cat  = line[CATEGORY_COL].strip()
+
+    # Best track data has duplicate timestamps
+    if time == prevTime:
+      continue
+
+    prevTime = time
+    lines += 1
 
     # Format the timestamp
     date = datetime.datetime.strptime(time, timeFormat).isoformat()
