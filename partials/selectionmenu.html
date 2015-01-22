@@ -1,4 +1,5 @@
 <div ng-controller='SelectionCtrl'>
+  
   <h2>Global Hawk Flights</h2>
   <p ng-repeat="flight in flightList | orderBy:'startTime'"
       ng-click='selectFlight(flight)'
@@ -7,12 +8,15 @@
     <span class='color-box' style="background-color: {{flight.color}}"></span>
     <span style='float: right; margin-right: 20px; color: #999'>{{flight.startTime.toLocaleDateString()}}</span>
   </p>
+
   <h2>Storms</h2>
   <p ng-repeat="storm in stormList"
       ng-click="selectStorm(storm)"
       ng-class="{'selected': storm.selected, 'disabled': !storm.available}">
     {{storm.name}}
-  <span class='color-box' style="background-color: {{storm.color}}"></span>
-  <span style='float: right; margin-right: 20px; color: #999'>{{storm.startTime.toLocaleDateString()}}</span>    
+    <span class='color-box' style="background-color: {{storm.color}}"></span>
+    <span style='float: right; margin-right: 20px; color: #999'>
+      {{storm.startTime.toLocaleDateString()}}
+    </span>    
   </p>
 </div>
