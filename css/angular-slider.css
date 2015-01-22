@@ -4,7 +4,7 @@ slider, [slider] {
   position: relative;
   height: 10px;
   width: 100%;
-  margin: 25px 5px 10px 5px;
+  margin: 25px 5px 20px 5px;
   vertical-align: middle;
 }
 /* line 10, slider.scss */
@@ -44,18 +44,12 @@ slider div.handle, [slider] div.handle {
 
 slider div.handle.low, [slider] div.handle.low, 
   slider div.handle.high, [slider] div.handle.high {
-  position: absolute;
   height: 12px;
   width: 3px;
   top: -3px;
-  cursor: pointer;
   border: 2px solid #eaeaea;
   background: #aeaeae;
   border-radius: 2px;
-  -webkit-box-sizing: content-box !important;
-  -moz-box-sizing: content-box !important;
-  box-sizing: content-box !important;
-  z-index: 941;
 }
 
 /* line 48, slider.scss */
@@ -68,13 +62,18 @@ slider div.handle.active, [slider] div.handle.active {
 }
 /* line 58, slider.scss */
 slider div.bubble, [slider] div.bubble {
-  /*display: none;*/
   cursor: default;
   top: -22px;
   padding: 1px 3px 1px 3px;
   font-size: 0.7em;
   font-family: sans-serif;
 }
+
+slider div.bubble.value.low, [slider] div.bubble.value.low,
+  slider div.bubble.value.high, [slider] div.bubble.value.high {
+  top: 15px;
+}
+
 /* line 66, slider.scss */
 slider div.bubble.active, [slider] div.bubble.active {
   display: inline-block;
@@ -82,17 +81,4 @@ slider div.bubble.active, [slider] div.bubble.active {
 /* line 70, slider.scss */
 slider div.bubble.limit, [slider] div.bubble.limit {
   color: #777;
-}
-
-.html5-scrubber-button {
-  border: 5px solid #eaeaea;
-  background: #aeaeae;
-  height: 6px;
-  width: 6px;
-  z-index: 941;
-  top: -4px;
-  position: absolute;
-  cursor: pointer;
-  margin-left: -8px;
-  border-radius: 8px;
 }

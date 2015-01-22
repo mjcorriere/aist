@@ -238,7 +238,8 @@
             var barWidth, 
               boundToInputs,
               dimensions,
-              handleHalfWidth,
+              endHandleHalfWidth,
+              midHandleHalfWidth,
               maxOffset,
               maxValue,
               minOffset,
@@ -268,7 +269,7 @@
               };
             }
 
-            handleHalfWidth = barWidth = minOffset = maxOffset = midOffset = minValue = maxValue = midValue = valueRange = offsetRange = void 0;
+            endHandleHalfWidth = midHandleHalfWidth = barWidth = minOffset = maxOffset = midOffset = minValue = maxValue = midValue = valueRange = offsetRange = 0;
 
             dimensions = function() {
 
@@ -310,14 +311,14 @@
                 }
               }
               
-              handleHalfWidth = halfWidth(minPtr);
+              endHandleHalfWidth = halfWidth(minPtr);
+              midHandleHalfWidth = halfWidth(midPtr);
               barWidth = width(bar);
               minOffset = 0;
               maxOffset = barWidth - width(minPtr);
               minValue = parseFloat(scope.floor);
               maxValue = parseFloat(scope.ceiling);
               valueRange = maxValue - minValue;
-
               
               return offsetRange = maxOffset - minOffset;
 
@@ -355,19 +356,22 @@
               setPointers = function() {
                 var newHighValue, newLowValue, newMidValue;
                 
-                offset(ceilBub, pixelize(barWidth - width(ceilBub)));
+                // 1.75 and 2.5 are magic numbers that position the label
+                offset(ceilBub, pixelize(barWidth - width(ceilBub) / 1.75));
+                offset(flrBub, pixelize(- width(flrBub) / 2.5));
+                
                 newLowValue = percentValue(scope.local[low]);
                 
                 offset(minPtr, percentToOffset(newLowValue));
-                offset(lowBub, pixelize(offsetLeft(minPtr) - (halfWidth(lowBub)) + handleHalfWidth));
-                offset(selection, pixelize(offsetLeft(minPtr) + handleHalfWidth));
+                offset(lowBub, pixelize(offsetLeft(minPtr) - (halfWidth(lowBub)) + endHandleHalfWidth));
+                offset(selection, pixelize(offsetLeft(minPtr) + endHandleHalfWidth));
                 
                 switch (true) {
                 
                   case range:
                     newHighValue = percentValue(scope.local[high]);
                     offset(maxPtr, percentToOffset(newHighValue));
-                    offset(highBub, pixelize(offsetLeft(maxPtr) - (halfWidth(highBub)) + handleHalfWidth));
+                    offset(highBub, pixelize(offsetLeft(maxPtr) - (halfWidth(highBub)) + endHandleHalfWidth));
                     return selection.css({
                       width: percentToOffset(newHighValue - newLowValue)
                     });
@@ -377,11 +381,11 @@
 
                     newHighValue = percentValue(scope.local[high]);
                     offset(maxPtr, percentToOffset(newHighValue));
-                    offset(highBub, pixelize(offsetLeft(maxPtr) - (halfWidth(highBub)) + handleHalfWidth));
+                    offset(highBub, pixelize(offsetLeft(maxPtr) - (halfWidth(highBub)) + endHandleHalfWidth));
                     
                     newMidValue  = percentValue(scope.local[mid]);
                     offset(midPtr, percentToOffset(newMidValue));
-                    offset(midBub, pixelize(offsetLeft(midPtr) - (halfWidth(midBub)) + handleHalfWidth));
+                    offset(midBub, pixelize(offsetLeft(midPtr) - (halfWidth(midBub)) + midHandleHalfWidth));
 
                     return selection.css({
                       width: percentToOffset(newHighValue - newLowValue)
@@ -422,7 +426,7 @@
                 
                   eventX = event.clientX || event.touches[0].clientX;
                 
-                  newOffset = eventX - element[0].getBoundingClientRect().left - handleHalfWidth;
+                  newOffset = eventX - element[0].getBoundingClientRect().left - endHandleHalfWidth;
                   newOffset = Math.max(Math.min(newOffset, maxOffset), minOffset);
                 
                   newPercent = percentOffset(newOffset);
