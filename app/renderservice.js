@@ -7,7 +7,7 @@ hs3.service('RenderService', [function() {
   var defaultColor    = 'rgb(225, 0, 0)';
   var disabledColor   = 'rgb(225, 225, 225)';
   var strokeOpacity   = 0.9;
-  var disabledOpacity = 0.5;
+  var disabledOpacity = 0.75;
   var polyLine        = new google.maps.Polyline();
   var pointIcon       = {
     path: google.maps.SymbolPath.CIRCLE
