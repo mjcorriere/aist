@@ -32,7 +32,7 @@ function generateByHSV() {
   }
 
   var saturations = [1];
-  var brightnesses= [1, .8];
+  var brightnesses= [1];
 
   var colors = [];
 
@@ -137,6 +137,29 @@ function desaturate() {
       // Hand picked:
       'rgb(0, 255, 255)'
     ];
+
+    var colorDiv = document.getElementById('colors');
+    var rowsize = 960;
+    colorDiv.style.width = rowsize;
+
+    var topmargin = 0;
+    var spacing = 5;
+    var boxesPerRow = 12;
+
+    var boxsize = rowsize / boxesPerRow - spacing;
+
+    for (c in colors) {
+      var color = colors[c];
+      var div = document.createElement("DIV");
+      div.classList.add("color");
+      div.style.backgroundColor = color;
+      div.style.width = boxsize;
+      div.style.height = boxsize;
+      div.style.margin = topmargin + "px " + spacing + "px 0px 0px";
+      colorDiv.appendChild(div);
+    }    
 }
 
-generateByHSV();
+// generateByHSV();
+
+desaturate();

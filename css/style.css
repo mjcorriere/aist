@@ -26,32 +26,48 @@ html, body {
   margin-left: 10px;
 }
 
-#selectionMenu p {
+#selectionMenu .trackable {
   margin-top: 0px;
   margin-bottom: 2px;
   padding-top: 5px;
   padding-bottom: 5px;
-  padding-left: 10px;  
+  padding-left: 10px;
   width: 100%;
 }
 
-#selectionMenu p:hover {
+#selectionMenu .trackable:hover {
   background: #0BB;
   cursor: pointer;
 }
 
-#selectionMenu p.selected {
+#selectionMenu .trackable.selected {
   background: #099;
   cursor: pointer;
 }
 
-#selectionMenu p.disabled {
+#selectionMenu .trackable.selected:hover {
+  background: #0BB;
+  cursor: pointer;
+}
+
+#selectionMenu .trackable.disabled {
   color: #999;
 }
 
-#selectionMenu p.disabled:hover {
+#selectionMenu .trackable.disabled:hover {
   background: #555;
   cursor: default;
+}
+
+#selectionMenu .trackable .date {
+  float: right;
+  margin-right: 20px;
+  color: #999;
+}
+
+#selectionMenu input[type=checkbox] {
+  margin-top: 0px;
+  margin-right: 10px;
 }
 
 #mapCanvas {
@@ -136,8 +152,8 @@ html, body {
 .color-box {
   display: inline-block;
   float: right;
-  width: 15px;
-  height: 15px;
+  width: 18px;
+  height: 18px;
   margin-right: 10px;
   border: 1px solid #000;
 }

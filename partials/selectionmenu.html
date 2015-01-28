@@ -1,22 +1,29 @@
 <div ng-controller='SelectionCtrl'>
   
   <h2>Global Hawk Flights</h2>
-  <p ng-repeat="flight in flightList | orderBy:'startTime'"
+  <div class="trackable" style="display: inline-block;" ng-repeat="flight in flightList | orderBy:'startTime'"
       ng-click='selectFlight(flight)'
       ng-class="{'selected': flight.selected, 'disabled': !flight.available}">
-    {{flight.name}} 
-    <span class='color-box' style="background-color: {{flight.color}}"></span>
-    <span style='float: right; margin-right: 20px; color: #999'>{{flight.startTime.toLocaleDateString()}}</span>
-  </p>
+    <input type='checkbox' 
+      ng-model="flight.selected" 
+      style="cursor: default"
+      ng-disabled="!flight.available"
+      >
+    {{flight.name}}
+    <div class='color-box' style="background-color: {{flight.color}}"></div>
+    <div class="date">{{flight.startTime.toLocaleDateString()}}</div>
+  </div>
 
   <h2>Storms</h2>
-  <p ng-repeat="storm in stormList"
+  <div class="trackable" ng-repeat="storm in stormList"
       ng-click="selectStorm(storm)"
       ng-class="{'selected': storm.selected, 'disabled': !storm.available}">
+    <input type="checkbox"
+    ng-model="storm.selected"
+    ng-disabled="!storm.available"
+    >
     {{storm.name}}
-    <span class='color-box' style="background-color: {{storm.color}}"></span>
-    <span style='float: right; margin-right: 20px; color: #999'>
-      {{storm.startTime.toLocaleDateString()}}
-    </span>    
-  </p>
+    <div class='color-box' style="background-color: {{storm.color}}"></div>
+    <div class="date">{{storm.startTime.toLocaleDateString()}}</div>
+  </div>
 </div>
