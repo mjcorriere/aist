@@ -19,9 +19,13 @@ hs3.controller('MapCtrl',
 
   $scope.keyword = '';
 
+  $scope.makingRequest = false;
+
   $scope.makeRequest = function() {
 
     var keyword, startTime, endTime, coordinates = [];
+
+    $scope.makingRequest = true;
 
     keyword = $scope.keyword;
     
@@ -52,6 +56,7 @@ hs3.controller('MapCtrl',
 
     DataService.requestDatasets(keyword, startTime, endTime, coordinates)
       .then(function() {
+        $scope.makingRequest = false;
         $location.path('/request');
       });
 

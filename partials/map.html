@@ -1,4 +1,9 @@
 <div ng-controller='MapCtrl'>
+  <div ng-if="makingRequest" class="load-indicator">
+    <div class='load-image'>
+      <img src='../img/ajax-loader.gif'>
+    </div>
+  </div>
   <div id='mapmap'>
   </div>
   <div id='timeline'>
