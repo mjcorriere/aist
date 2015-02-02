@@ -171,17 +171,19 @@ hs3.factory('DataService', ['$http', function($http) {
 
   }  
 
-  DataService.loadStormData = function() {
+  DataService.loadStormData = function(season) {
     
-    var request = $http.get('data/storms2014.dat');
+    var reqestString = 'data/storms' + season + '.dat';
+    var request = $http.get(reqestString);
 
     return request.then(parseStormData, handleError);
 
   }
 
-  DataService.loadFlightData = function() {
+  DataService.loadFlightData = function(season) {
 
-    var request = $http.get('data/gh2014.dat');
+    var requestString = 'data/gh' + season + '.dat';
+    var request = $http.get(requestString);
 
     return request.then(parseFlightData, handleError);
 

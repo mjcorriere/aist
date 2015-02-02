@@ -120,12 +120,14 @@ hs3.factory('MapService', ['RenderService', 'DataService', '$q', function(Render
 
   function loadData() {
 
+    var season = GLOBALS.DEFAULT_SEASON;
+
     $q.all([
-      DataService.loadStormData()
+      DataService.loadStormData(season)
       .then(function(data) {
         stormList = data;
       }), 
-      DataService.loadFlightData()
+      DataService.loadFlightData(season)
         .then(function(data) {
           flightList = data;
         })

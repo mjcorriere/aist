@@ -96,7 +96,9 @@ hs3.controller('MapCtrl',
 
   function loadData() {
     
-    DataService.loadStormData()
+    var season = GLOBALS.DEFAULT_SEASON;
+
+    DataService.loadStormData(season)
       .then(function(data) {
         DataService.initializeAvailability();
 
@@ -112,7 +114,7 @@ hs3.controller('MapCtrl',
        
       });
 
-    DataService.loadFlightData()
+    DataService.loadFlightData(season)
       .then(function(data) {
         $scope.flightList = data;
       });
