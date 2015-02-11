@@ -162,8 +162,6 @@
           attributes.$set("redraw", "" + attributes.redraw + "()");
         }
 
-        console.log(attributes.translate);
-
         range = (attributes.ngModel == null) && (attributes.ngModelLow != null) && (attributes.ngModelHigh != null) && (attributes.ngModelMid == null);
         tri   = (attributes.ngModel == null) && (attributes.ngModelLow != null) && (attributes.ngModelHigh != null) && (attributes.ngModelMid != null);
        
@@ -262,7 +260,6 @@
             
             ngDocument = angularize(document);
 
-            console.log(attributes.translate);
             if (!attributes.translate) {
               scope.translate = function(value) {
                 return value.value.toString();

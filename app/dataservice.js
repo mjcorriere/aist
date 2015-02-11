@@ -140,8 +140,11 @@ hs3.factory('DataService', ['$http', function($http) {
   DataService.selectStorm = function(storm) {
 
     storm.selected = !storm.selected;
+    var stormName = storm.name;
 
-    var index = stormList.indexOf(storm);
+    var index = stormList.map(
+      function(s) { return s.name; }
+    ).indexOf(stormName);
 
     if (storm.selected) {
       selectedStorms[index] = true;
@@ -157,8 +160,11 @@ hs3.factory('DataService', ['$http', function($http) {
   DataService.selectFlight = function(flight) {
 
     flight.selected = !flight.selected;
+    var flightStart = flight.startTime;
 
-    var index = flightList.indexOf(flight);
+    var index = flightList.map(
+      function(f) { return f.startTime; }
+    ).indexOf(flightStart);
 
     if (flight.selected) {
       selectedFlights[index] = true;
@@ -237,13 +243,13 @@ hs3.factory('DataService', ['$http', function($http) {
     // console.log('final window:', minTime, maxTime);
 
     maxAvailabilityWindow.min = minTime;
-    maxAvailabilityWindow.max   = maxTime;
+    maxAvailabilityWindow.max = maxTime;
 
     currentAvailabilityWindow.min = minTime;
-    currentAvailabilityWindow.max   = maxTime;
+    currentAvailabilityWindow.max = maxTime;
 
     selectedWindow.lower = minTime;
-    selectedWindow.upper   = maxTime;
+    selectedWindow.upper = maxTime;
 
     selectedWindow.mid = (maxTime + minTime) / 2;
 
@@ -344,8 +350,11 @@ hs3.factory('DataService', ['$http', function($http) {
   function parseStormData(response) {
     // console.log('parsing hurricane data');
 
-    if (!stormDataParsed) {
-      stormDataParsed = true;
+    // if (!stormDataParsed) {
+    //   stormDataParsed = true;
+      stormList = [];
+      selectedStorms = [];
+
       var data = response.data;
       var lines = data.split('\n');
       lines.pop();
@@ -389,7 +398,7 @@ hs3.factory('DataService', ['$http', function($http) {
         stormList.push(storm);
 
       }
-    }
+    // }
     // console.log(stormList);
 
     return DataService.getStormList();
@@ -397,9 +406,12 @@ hs3.factory('DataService', ['$http', function($http) {
 
   function parseFlightData(response) {
 
-    if (!flightDataParsed) {
+    // if (!flightDataParsed) {
 
-      flightDataParsed = true;
+    //   flightDataParsed = true;
+
+      flightList = [];
+      selectedFlights = [];
 
       var data = response.data;
       var lines = data.split('\n');
@@ -450,7 +462,7 @@ hs3.factory('DataService', ['$http', function($http) {
         flightList.push(flight);
 
       }
-    }
+    // }
 
     return DataService.getFlightList();
   }
