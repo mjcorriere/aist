@@ -4,8 +4,8 @@ hs3.factory('MapService', ['RenderService', 'DataService', '$q', function(Render
   var stormList       = [];
   var flightList      = [];
 
-  var stormTracks = [];
-  var flightTracks = [];
+  var stormTracks     = [];
+  var flightTracks    = [];
 
   var selectedWindow;
 
@@ -31,6 +31,8 @@ hs3.factory('MapService', ['RenderService', 'DataService', '$q', function(Render
   MapService.createPolyLines = function() {
 
     console.log('initializing storms/flights');
+    stormTracks = [];
+    flightTracks = [];
 
     for (var i = 0; i < stormList.length; i++) {
 
@@ -118,6 +120,26 @@ hs3.factory('MapService', ['RenderService', 'DataService', '$q', function(Render
 
   }  
 
+  MapService.update = function() {
+    
+    // Get rid of any currently drawn paths
+    for(var i = 0; i < stormTracks.length; i++) {
+      stormTracks[i].polyline.setMap(null);
+      stormTracks[i].marker.setMap(null);      
+    }
+
+    for(var i = 0; i < flightTracks.length; i++) {
+      flightTracks[i].polyline.setMap(null);
+      flightTracks[i].marker.setMap(null);      
+    }
+
+    stormList = DataService.getStormList();
+    flightList = DataService.getFlightList();
+    MapService.createPolyLines();
+    DataService.initializeAvailability();
+    selectedWindow = DataService.getSelectedWindow();    
+  }
+
   function loadData() {
 
     var season = GLOBALS.DEFAULT_SEASON;
@@ -132,11 +154,8 @@ hs3.factory('MapService', ['RenderService', 'DataService', '$q', function(Render
           flightList = data;
         })
       ]).then(function() {
-        console.log('******* WORKRKRKRKED');
         MapService.createPolyLines();
         DataService.initializeAvailability();
-        // maxAvailabilityWindow = DataService.getMaxAvailabilityWindow();
-        // availabilityWindow = DataService.getCurrentAvailabilityWindow();
         selectedWindow = DataService.getSelectedWindow();
       });
    
