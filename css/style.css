@@ -5,6 +5,11 @@ html, body {
   height: 100%;
   color: #EEE;
   font-family: Arial, sans-serif;
+  overflow: hidden;
+}
+
+#container {
+  overflow: hidden;
 }
 
 #selectionMenu {
@@ -266,8 +271,50 @@ html, body {
   top:1px;
 }
 
+.request-overlay {
+  position: absolute;
+  overflow: hidden;
+  top: 0px;
+  right: -600px;
+  background-color: #FFF;
+  z-index: 999;
+  height: 100%;
+  width: 600px;
+  transition: all 0.5s ease;
+}
 
+.request-tab {
+  position: absolute;
+  cursor: pointer;
+  right: 0px;
+  top: 75px;
+  width: 25px;
+  height: 100px;
+  z-index: 999;
+  background-color: #333;
+  color: #333;
+  border: 1px solid #666;
+  border-right: 0px;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+  transition: all 0.5s ease;
+}
 
+.request-tab:hover {
+  right: 600px;
+}
+
+.request-tab:hover + .request-overlay {
+  right: 0px;
+}
+
+.request-overlay:hover {
+  right: 0px;
+}
+
+.request-overlay:hover ~ .request-tab {
+  right: 600px;
+}
 
 
 

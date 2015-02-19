@@ -1,2 +1,23 @@
 <div id='mapCanvas' ng-include="'partials/map.html'"></div>
 <div id='selectionMenu' ng-include="'partials/selectionmenu.html'"></div>
+<div class='request-tab'></div>
+<div class='request-overlay'>
+  <div id='results-table' ng-controller='RequestController'>
+    <h1>Results</h1>
+    <table ng-table="tableParams" show-filter="true" class="table">
+      <tr ng-repeat="row in $data">
+        <td data-title="'Title'" 
+          sortable="'title'" 
+          filter="{ 'title': 'text' }">
+          {{row.title}}
+        </td>
+        <td data-title="'Granule ID'">
+          {{row.id}}
+        </td>
+        <td data-title="'Request Granules'">
+          <button class='btn' ng-click="download(row.id)">Request</button>
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>
