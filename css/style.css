@@ -275,12 +275,16 @@ html, body {
   position: absolute;
   overflow: hidden;
   top: 0px;
-  right: -600px;
+  right: 0px;
   background-color: #FFF;
   z-index: 999;
   height: 100%;
-  width: 600px;
-  transition: all 0.5s ease;
+  width: 0%;
+  transition: all 1s ease;
+}
+
+.request-overlay.active {
+  width: 75%;
 }
 
 .request-tab {
@@ -297,7 +301,7 @@ html, body {
   border-right: 0px;
   border-top-left-radius: 5px;
   border-bottom-left-radius: 5px;
-  transition: all 0.5s ease;
+  transition: all 0.75s ease;
 }
 
 .request-tab:hover {

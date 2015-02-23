@@ -1,6 +1,6 @@
 hs3.controller('MapCtrl', 
-  ['$scope', '$location', '$http', 'DataService', 'MapService', 
-  function($scope, $location, $http, DataService, MapService) {
+  ['$scope', '$rootScope', '$location', '$http', 'DataService', 'MapService', 
+  function($scope, $rootScope, $location, $http, DataService, MapService) {
   
   initializeMap();
 
@@ -17,6 +17,7 @@ hs3.controller('MapCtrl',
   $scope.keyword = '';
 
   $scope.makingRequest = false;
+  $scope.showRequestPane = false;
 
   $scope.makeRequest = function() {
 
@@ -54,7 +55,9 @@ hs3.controller('MapCtrl',
     DataService.requestDatasets(keyword, startTime, endTime, coordinates)
       .then(function() {
         $scope.makingRequest = false;
-        $location.path('/request');
+        $scope.showRequestPane = true;
+        $rootScope.$broadcast('resultsReceived');        
+        // $location.path('/request');
       });
 
   }

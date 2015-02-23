@@ -1,0 +1,23 @@
+<div ng-controller='RequestController'>
+  <div class='request-overlay' ng-class="{'active': showRequestPane}">
+    <button class='btn' ng-click="close()">Close Pane</button>
+    <div id='results-table'>
+      <h1>Results</h1>
+      <table ng-table="tableParams" show-filter="true" class="table">
+        <tr ng-repeat="row in $data">
+          <td data-title="'Title'" 
+            sortable="'title'" 
+            filter="{ 'title': 'text' }">
+            {{row.title}}
+          </td>
+          <td data-title="'Granule ID'">
+            {{row.id}}
+          </td>
+          <td data-title="'Request Granules'">
+            <button class='btn' ng-click="download(row.id)">Request</button>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>
