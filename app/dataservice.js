@@ -38,7 +38,7 @@ hs3.factory('DataService', ['$http', function($http) {
 
   DataService.requestDatasets = function(_keyword, _startTime, _endTime, _coordinates) {
     // datasets?keyword=AMSU&start=2014-01-03T12:00:00&end=2014-01-04T12:00:00&geotype=bb&coords=116.904,24.527,117.680,39.834    
-    var debugRequest = "http://mldlinvm.draper.com:8080/aistservlet/datasets?start=1999-01-03T12:00:00&end=1999-08-23T12:00:00&geotype=bb&coords=116.904,24.527,141.680,39.834";
+    var debugRequest = "http://mldlinvm.draper.com:8080/aistservlet/datasets?keyword=airs&start=1999-01-03T12:00:00&end=1999-08-23T12:00:00&geotype=bb&coords=116.904,24.527,141.680,39.834";
 
     // Format the startTimes
 

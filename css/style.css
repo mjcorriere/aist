@@ -273,7 +273,9 @@ html, body {
 
 .request-overlay {
   position: absolute;
-  overflow: hidden;
+  visibility: hidden;
+  overflow-x: hidden;
+  overflow-y: hidden;
   top: 0px;
   right: 0px;
   background-color: #FFF;
@@ -285,6 +287,8 @@ html, body {
 
 .request-overlay.active {
   width: 75%;
+  visibility: visible;
+  overflow-y: auto;
 }
 
 .request-tab {

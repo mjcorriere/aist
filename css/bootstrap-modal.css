@@ -66,6 +66,7 @@
   top: 0;
   right: 0;
   left: 0;
+  bottom: 0;
   background-color: #000000;
 }
 .modal-backdrop.fade {
@@ -91,6 +92,8 @@
 .modal-body {
   position: relative;
   padding: 15px;
+  overflow-y: scroll;
+  height: 80%;
 }
 .modal-footer {
   padding: 15px;
