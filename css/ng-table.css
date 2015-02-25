@@ -1,5 +1,5 @@
 .ng-table th {
-  text-align: center;
+  text-align: left;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   -khtml-user-select: none;
@@ -86,6 +86,11 @@
 .ng-table + .pagination {
   margin-top: 0;
 }
+
+.pagination {
+  margin-top: 0px;
+}
+
 @media only screen and (max-width: 800px) {
   .ng-table-responsive {
     border-bottom: 1px solid #999999;

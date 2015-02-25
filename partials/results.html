@@ -1,20 +1,23 @@
 <div ng-controller='RequestController'>
   <div class='request-overlay' ng-class="{'active': showRequestPane}">
-    <button class='btn' ng-click="close()">Close Pane</button>
     <div id='results-table'>
+      <button class='btn btn-danger' style="float: right" ng-click="close()">
+        <span class='glyphicon glyphicon-remove' aria-hidden='true'></span> Close
+      </button>
       <h1>Results</h1>
       <table ng-table="tableParams" show-filter="true" class="table">
         <tr ng-repeat="row in $data">
           <td data-title="'Title'" 
-            sortable="'title'" 
             filter="{ 'title': 'text' }">
             {{row.title}}
           </td>
-          <td data-title="'Granule ID'">
+<!--           <td data-title="'Granule ID'">
             {{row.id}}
-          </td>
-          <td data-title="'Request Granules'">
-            <button class='btn' ng-click="download(row.id)">Request</button>
+          </td> -->
+          <td data-title="''" style='width: 1px'>
+            <button class='btn btn-info' ng-click="download(row.id)">
+              <span class='glyphicon glyphicon-refresh' aria-hidden='true'></span> Request
+            </button>
           </td>
         </tr>
       </table>

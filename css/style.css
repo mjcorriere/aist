@@ -192,6 +192,7 @@ html, body {
 #results-table {
   padding: 30px;
   color: #000;
+  padding: 0px 100px;
 }
 
 #results-table table {
@@ -226,7 +227,8 @@ html, body {
   width: 52px;
   height: 52px;
   padding: 10px;
-  border-radius: 10px
+  border-radius: 10px;
+  box-sizing: border-box;
 }
 
 
