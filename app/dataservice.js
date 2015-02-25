@@ -163,8 +163,8 @@ hs3.factory('DataService', ['$http', function($http) {
     var flightStart = flight.startTime;
 
     var index = flightList.map(
-      function(f) { return f.startTime; }
-    ).indexOf(flightStart);
+      function(f) { return +f.startTime; }
+    ).indexOf(+flightStart);
 
     if (flight.selected) {
       selectedFlights[index] = true;
