@@ -27,11 +27,6 @@ html, body {
   padding-top: 0px;
   background-color: #555;
   overflow: auto;
-  -webkit-box-sizing: border-box;
-     -moz-box-sizing: border-box;
-      -ms-box-sizing: border-box;
-       -o-box-sizing: border-box;
-          box-sizing: border-box;  
 }
 
 #selectionMenu h3 {
@@ -141,52 +136,61 @@ html, body {
   height: 100%;
 }
 
-#timeline {
-  color: #EEE;
-  /*height: 175px;*/
+#map-controls {
   z-index: 999;
   position: absolute;
   left: 0px;
   bottom: 0px;
   right: 0px;
-  margin: 20px;
-  padding: 20px;
-  padding-top: 10px;
-  border-radius: 5px;
-  background-color: rgba(60, 60, 60, .90);
-  -webkit-box-sizing: border-box;
-     -moz-box-sizing: border-box;
-      -ms-box-sizing: border-box;
-       -o-box-sizing: border-box;
-          box-sizing: border-box;    
+  padding: 0;
+  /*background-color: rgba(60, 0, 0, .40);*/
 }
 
-.slider-container {
-  margin-top: 10px;
-  padding-left:15px;
-  padding-right: 25px;
+#map-controls .panel {
+  position: relative;
+  color: #EEE;
+  z-index: 999;
+  border-radius: 4px;
+  background-color: rgba(85, 85, 85, .96);
 }
 
-#timeline h2 {
+#map-controls .panel h1 {
+  font-size: 20px;
   margin-top: 0px;
+}
+
+#map-controls .time.panel {
+  margin: 10px;
+}
+
+#map-controls .quarter-panel-container {
+  width: 25%;
+  float: left;
+}
+
+#map-controls .quarter.panel {
+  height: 200px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  padding: 10px;
+}
+
+#map-controls .first.quarter.panel {
+  margin-left: 10px;
+}
+
+#map-controls .quarter.panel .footer {
+  position: absolute;
+  bottom: 0px;
   margin-bottom: 10px;
 }
 
-#timeline h4 {
-  margin-top: 0px;
-  margin-bottom: 0px;
-  margin-left: 5px;
-  margin-right: 15px;
-  font-weight: normal;
-  float: left;
+.slider-container {
+  padding: 10px 40px 10px 25px;
 }
 
 .control-row {
   margin-bottom: 10px;
-}
-
-#timeline label {
-  margin-right: 10px;
 }
 
 #data-modal {
