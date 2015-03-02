@@ -11,6 +11,7 @@ hs3.controller('MapCtrl',
 
   $scope.polygonDrawn = false;
   $scope.drawingPolygon = false;
+  $scope.centroid = 'None';
 
   $scope.polygon = null;
 
@@ -70,6 +71,8 @@ hs3.controller('MapCtrl',
   $scope.removePolygon = function() {
     $scope.polygon.setPath([]);
     $scope.polygon.setMap(null);
+    $scope.polygonDrawn = false;
+    $scope.centroid = 'None'
   }
 
   $scope.formatter = function(value) {
@@ -89,7 +92,35 @@ hs3.controller('MapCtrl',
     $scope.polygon = polygon;
     $scope.polygonDrawn = true;
     $scope.drawingPolygon = false;
+    $scope.centroid = calculateCentroid(polygon);
+
+    google.maps.event.addListener(polygon, "dragend", function() {
+      $scope.centroid = calculateCentroid($scope.polygon);
+      $scope.apply();
+    });
+
     $scope.$apply();
+  }
+
+  function calculateCentroid(polygon) {
+    var coordinates = $scope.polygon.getPath().getArray();
+    var latSum, lngSum, averageLats, averageLngs, centroid;
+
+    latSum = 0;
+    lngSum = 0;
+
+    for (var i = 0; i < coordinates.length; i++) {
+      latSum += coordinates[i].lat();
+      lngSum += coordinates[i].lng();
+    }
+
+    averageLats = latSum / coordinates.length;
+    averageLngs = lngSum / coordinates.length;
+
+    centroid = averageLats.toFixed(3) + ', ' + averageLngs.toFixed(3);
+
+    return centroid;
+
   }
 
 }]);

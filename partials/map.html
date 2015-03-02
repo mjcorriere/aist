@@ -25,12 +25,14 @@
       <div class='first quarter panel'>
         <h1>Area of Interest</h1>
         <p>Centroid</p>
+        {{centroid}}
         <p>Bounds</p>
         <div class='footer'>
           <button class='btn btn-sm btn-success' ng-click='startDrawing()'>
             <span class='glyphicon glyphicon-pencil'></span> Draw
           </button>
-          <button class='btn btn-sm btn-success' ng-click='removePolygon()'>
+          <button class='btn btn-sm' 
+            ng-class="{'btn-success': polygonDrawn, 'disabled': !polygonDrawn}" ng-click='removePolygon()'>
             <span class='glyphicon glyphicon-remove'></span> Remove
           </button>
         </div>
@@ -38,12 +40,27 @@
     </div>
     <div class='quarter-panel-container'>
       <div class='quarter panel'>
-        <h1>Instrument</h1>
-        <input class='form-control' ng-model='keyword' type='text'
-        style='height: 30px; width: 125px; float: left'></input>
-        <button class='btn btn-sm btn-success' ng-click=''>
-          <span class='glyphicon glyphicon-plus' aria-hidden='true'></span> Add
-        </button>          
+        <h1>Search</h1>
+        <p>Tags</p>
+        <span class="label label-primary">
+          <span class='glyphicon glyphicon-remove' aria-hidden='true'></span>AIRS</span>
+
+        <span class="label label-primary">
+          <span class='glyphicon glyphicon-remove' aria-hidden='true'></span>AQUA</span>
+
+        <span class="label label-primary">
+          <span class='glyphicon glyphicon-remove' aria-hidden='true'></span>Cloud</span>
+
+        <span class="label label-primary">
+          <span class='glyphicon glyphicon-remove' aria-hidden='true'></span>Level 3</span>
+
+        <div class='footer'>
+          <input class='form-control' ng-model='keyword' type='text'
+          style='height: 30px; width: 125px; float: left'></input>
+          <button class='btn btn-sm btn-success' ng-click=''>
+            <span class='glyphicon glyphicon-plus' aria-hidden='true'></span> Add
+          </button>
+        </div>
       </div>
     </div>
     <div class='quarter-panel-container'>
