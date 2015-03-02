@@ -10,8 +10,12 @@
     <h2>Map Controls</h2>
     <div class='control-row'>
       <h4>Area of Interest</h4>
-      <button class='myButton' ng-click='startDrawing()'>Draw</button>
-      <button class='myButton' ng-click='removePolygon()'>Remove</button>
+      <button class='btn btn-xs btn-success' ng-click='startDrawing()'>
+        <span class='glyphicon glyphicon-pencil'></span> Draw
+      </button>
+      <button class='btn btn-xs btn-success' ng-click='removePolygon()'>
+        <span class='glyphicon glyphicon-remove'></span> Remove
+      </button>
     </div>
     <div class='control-row'>
       <h4>Date Range</h4>
@@ -37,7 +41,9 @@
     </div>
     <div class='control-row'>
       <h4>Request</h4>
-      <button class='myButton' ng-click='makeRequest()'>Request Data</button>
+      <button class='btn btn-xs btn-success' ng-click='makeRequest()'>
+        <span class='glyphicon glyphicon-refresh' aria-hidden='true'></span> Request Data
+      </button>
     </div>
   </div>
 </div>
