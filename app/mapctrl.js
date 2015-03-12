@@ -20,6 +20,12 @@ hs3.controller('MapCtrl',
   $scope.makingRequest = false;
   $scope.showRequestPane = false;
 
+  $scope.requestProgress = {
+    "AOI": false,
+    "keyword": false,
+    "timeWindow": false
+  }
+
   $scope.makeRequest = function() {
 
     var keyword, startTime, endTime, coordinates = [];
@@ -72,11 +78,17 @@ hs3.controller('MapCtrl',
     $scope.polygon.setPath([]);
     $scope.polygon.setMap(null);
     $scope.polygonDrawn = false;
+    $scope.requestProgress.AOI = false;
     $scope.centroid = 'None'
   }
 
-  $scope.formatter = function(value) {
+  $scope.dateFormatter = function(value) {
     var date = new Date(parseInt(value)).toLocaleDateString();
+    return date;
+  }
+
+  $scope.dateTimeFormatter = function(value) {
+    var date = new Date(parseInt(value)).toLocaleString();
     return date;
   }
 
@@ -91,15 +103,31 @@ hs3.controller('MapCtrl',
     console.log('polygon complete');
     $scope.polygon = polygon;
     $scope.polygonDrawn = true;
+    $scope.requestProgress.AOI = true;
     $scope.drawingPolygon = false;
     $scope.centroid = calculateCentroid(polygon);
 
-    google.maps.event.addListener(polygon, "dragend", function() {
-      $scope.centroid = calculateCentroid($scope.polygon);
-      $scope.apply();
-    });
+    // google.maps.event.addListener(polygon, "dragend", function() {
+    //   $scope.centroid = calculateCentroid($scope.polygon);
+    //   $scope.apply();
+    // });
 
     $scope.$apply();
+
+  }
+
+  $scope.nudgeUpperLimit = function(minutes) {
+    var ms = minutes * 60 * 1000;
+    var upper = parseInt($scope.o.upper);
+    $scope.o.upper = upper + ms;
+    $scope.redraw();
+  }
+
+  $scope.nudgeLowerLimit = function(minutes) {
+    var ms = minutes * 60 * 1000;
+    var lower = parseInt($scope.o.lower);
+    $scope.o.lower = lower + ms;
+    $scope.redraw();
   }
 
   function calculateCentroid(polygon) {

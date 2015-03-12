@@ -17,6 +17,7 @@ html, body {
 
 #container {
   overflow: hidden;
+  height: 100%;
 }
 
 #selectionMenu {
@@ -38,12 +39,14 @@ html, body {
 }
 
 #selectionMenu .trackable {
+  position: relative;
+  width: 100%;
   margin-top: 0px;
   margin-bottom: 2px;
   padding-top: 5px;
   padding-bottom: 5px;
   padding-left: 10px;
-  width: 100%;
+  line-height: 1.2;
 }
 
 #selectionMenu .trackable:hover {
@@ -89,6 +92,8 @@ html, body {
 }
 
 #selectionMenu input[type=checkbox] {
+  position: relative;
+  top: 2px;
   margin-top: 0px;
   margin-right: 10px;
 }
@@ -160,7 +165,7 @@ html, body {
 }
 
 #map-controls .time.panel {
-  margin: 10px;
+  margin: 5px;
 }
 
 #map-controls .quarter-panel-container {
@@ -170,19 +175,29 @@ html, body {
 
 #map-controls .quarter.panel {
   height: 200px;
-  margin-right: 10px;
-  margin-bottom: 10px;
+  margin-right: 5px;
+  margin-bottom: 5px;
   padding: 10px;
 }
 
 #map-controls .first.quarter.panel {
-  margin-left: 10px;
+  margin-left: 5px;
 }
 
 #map-controls .quarter.panel .footer {
+  width: 100%;
   position: absolute;
   bottom: 0px;
   margin-bottom: 10px;
+  margin-left: -10px;
+  padding: 0 10px;
+}
+
+#map-controls input[type=checkbox] {
+  position: relative;
+  top: 2px;
+  margin-top: 0px;
+  margin-right: 10px;
 }
 
 .slider-container {
@@ -214,8 +229,8 @@ html, body {
 .color-box {
   display: inline-block;
   float: right;
-  width: 18px;
-  height: 18px;
+  width: 16px;
+  height: 16px;
   margin-right: 10px;
   border: 1px solid #000;
 }
@@ -338,5 +353,6 @@ html, body {
   right: 600px;
 }
 
-
-
+.form-control[readonly] {
+  cursor: default;
+}
