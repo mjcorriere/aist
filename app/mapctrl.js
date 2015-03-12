@@ -16,6 +16,7 @@ hs3.controller('MapCtrl',
   $scope.polygon = null;
 
   $scope.keyword = '';
+  $scope.keywords = ['AIRS', 'Level 3', 'AQUA'];
 
   $scope.makingRequest = false;
   $scope.showRequestPane = false;
@@ -28,16 +29,14 @@ hs3.controller('MapCtrl',
 
   $scope.makeRequest = function() {
 
-    var keyword, startTime, endTime, coordinates = [];
+    var keywords, startTime, endTime, coordinates = [];
 
     $scope.makingRequest = true;
 
-    keyword = $scope.keyword;
+    keywords = $scope.keywords.join(' ');
     
     startTime = parseInt($scope.o.lower);
     endTime = parseInt($scope.o.upper);
-
-    console.log('start', startTime, 'end', endTime);
 
     if ($scope.polygon) {
 
@@ -54,12 +53,10 @@ hs3.controller('MapCtrl',
 
       coordinates.push(raw[0].lng());
       coordinates.push(raw[0].lat());
-
-      console.log(coordinates);
       
     }
 
-    DataService.requestDatasets(keyword, startTime, endTime, coordinates)
+    DataService.requestDatasets(keywords, startTime, endTime, coordinates)
       .then(function() {
         $scope.makingRequest = false;
         $scope.showRequestPane = true;
@@ -80,6 +77,21 @@ hs3.controller('MapCtrl',
     $scope.polygonDrawn = false;
     $scope.requestProgress.AOI = false;
     $scope.centroid = 'None'
+  }
+
+  $scope.addKeyword = function(keyword) {
+    if (keyword !== '') {
+      $scope.keywords.push(keyword);
+    }
+    $scope.keyword = '';
+  }
+
+  $scope.removeKeyword = function(keyword) {
+    for (var i = 0; i < $scope.keywords.length; i++) {
+      if ($scope.keywords[i] == keyword) {
+        $scope.keywords.splice(i, 1);
+      }
+    }
   }
 
   $scope.dateFormatter = function(value) {

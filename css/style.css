@@ -200,6 +200,10 @@ html, body {
   margin-right: 10px;
 }
 
+#map-controls span.label {
+  cursor: pointer;
+}
+
 .slider-container {
   padding: 10px 40px 10px 25px;
 }
@@ -355,4 +359,8 @@ html, body {
 
 .form-control[readonly] {
   cursor: default;
+}
+
+.label .glyphicon {
+  top: 2px;
 }
