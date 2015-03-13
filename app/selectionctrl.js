@@ -11,8 +11,14 @@ hs3.controller('SelectionCtrl', ['$scope', '$q', 'DataService', 'MapService',
     '2012': false
   };
 
-  $scope.maxAvailabilityWindow = DataService.getMaxAvailabilityWindow();
-  $scope.availabilityWindow = DataService.getCurrentAvailabilityWindow();
+  // Initialization
+
+  $scope.loadSeason(DEFAULT_SEASON).then(function() {
+      DataService.initializeAvailability();
+      MapService.update();
+      $scope.maxAvailabilityWindow = DataService.getMaxAvailabilityWindow();
+      $scope.availabilityWindow = DataService.getCurrentAvailabilityWindow();
+  });
 
   $scope.selectedSeason = DEFAULT_SEASON;
   $scope.seasons[DEFAULT_SEASON] = true;
