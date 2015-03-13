@@ -16,15 +16,15 @@ hs3.controller('MapCtrl',
   $scope.polygon = null;
 
   $scope.keyword = '';
-  $scope.keywords = ['AIRS', 'Level 3', 'AQUA'];
+  $scope.keywords = [];
 
   $scope.makingRequest = false;
   $scope.showRequestPane = false;
 
   $scope.requestProgress = {
     "AOI": false,
-    "keyword": false,
-    "timeWindow": false
+    "keywords": false,
+    "timeWindow": true
   }
 
   $scope.makeRequest = function() {
@@ -71,6 +71,11 @@ hs3.controller('MapCtrl',
     $scope.drawingPolygon = true;
   }
 
+  $scope.cancelDrawing = function() {
+    drawingManager.setDrawingMode(null);
+    $scope.drawingPolygon = false;
+  }
+
   $scope.removePolygon = function() {
     $scope.polygon.setPath([]);
     $scope.polygon.setMap(null);
@@ -81,6 +86,9 @@ hs3.controller('MapCtrl',
 
   $scope.addKeyword = function(keyword) {
     if (keyword !== '') {
+      if ($scope.keywords.length == 0) {
+        $scope.requestProgress.keywords = true;
+      }
       $scope.keywords.push(keyword);
     }
     $scope.keyword = '';
@@ -91,6 +99,9 @@ hs3.controller('MapCtrl',
       if ($scope.keywords[i] == keyword) {
         $scope.keywords.splice(i, 1);
       }
+    }
+    if ($scope.keywords.length == 0) {
+      $scope.requestProgress.keywords = false;
     }
   }
 

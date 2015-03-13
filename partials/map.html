@@ -24,15 +24,19 @@
     <div class='quarter-panel-container'>
       <div class='first quarter panel'>
         <h1>Area of Interest</h1>
-        <label>Centroid</label>
-        {{centroid}}
+        <div class='content'>
+          <label>Centroid</label>
+          {{centroid}}
+        </div>
         <div class='footer'>
-          <button class='btn btn-sm btn-success' ng-click='startDrawing()'>
-            <span class='glyphicon glyphicon-pencil'></span> Draw
+          <button class='btn btn-sm btn-default' ng-click='startDrawing()' ng-hide="polygonDrawn">
+            <span class='glyphicon glyphicon-pencil'></span> Draw Polygon
           </button>
-          <button class='btn btn-sm' 
-            ng-class="{'btn-success': polygonDrawn, 'disabled': !polygonDrawn}" ng-click='removePolygon()'>
-            <span class='glyphicon glyphicon-remove'></span> Remove
+          <button class='btn btn-sm btn-warning' ng-click='removePolygon()' ng-hide="!polygonDrawn">
+            <span class='glyphicon glyphicon-remove'></span> Remove Polygon
+          </button>
+          <button class='btn btn-sm btn-danger' ng-click='cancelDrawing()' ng-show='drawingPolygon'>
+            <span class='glyphicon glyphicon-ban-circle'></span>
           </button>
         </div>
       </div>
@@ -40,28 +44,18 @@
     <div class='quarter-panel-container'>
       <div class='quarter panel'>
         <h1>Search</h1>
-        <label>Keywords</label>
-        
-        <span ng-repeat='keyword in keywords'>
-          <span class='label label-primary' ng-click='removeKeyword(keyword)'>
-            <span class='glyphicon glyphicon-remove' aria-hidden='true'></span> {{keyword}}</span>
-          </span>
-
-<!--         <span class="label label-primary">
-          <span class='glyphicon glyphicon-remove' aria-hidden='true'></span> AIRS</span>
-
-        <span class="label label-primary">
-          <span class='glyphicon glyphicon-remove' aria-hidden='true'></span> AQUA</span>
-
-        <span class="label label-primary">
-          <span class='glyphicon glyphicon-remove' aria-hidden='true'></span> Cloud</span>
-
-        <span class="label label-primary">
-          <span class='glyphicon glyphicon-remove' aria-hidden='true'></span> Level 3</span> -->
-
+        <div class='content'>
+          <label>Keywords</label>
+          <div>
+            <span ng-repeat='keyword in keywords'>
+              <span class='label label-info' ng-click='removeKeyword(keyword)'>
+                <span class='glyphicon glyphicon-remove' aria-hidden='true'></span> {{keyword}}</span>
+            </span>
+          </div>
+        </div>
         <div class='footer'>
           <div class="input-group">
-            <input type="text" class="form-control input-sm" ng-model='keyword' aria-label="...">
+            <input type="text" class="form-control input-sm" ng-model='keyword' placeholder='Enter keyword'>
             <div class="input-group-btn">
               <button type="button" class="btn btn-sm btn-default" ng-click="addKeyword(keyword)"><span class='glyphicon glyphicon-plus' aria-hidden='true'></span> Add</button>
               <button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>
@@ -80,51 +74,54 @@
     <div class='quarter-panel-container'>
       <div class='quarter panel'>
         <h1>Time Window</h1>
-        <label>Lower Limit</label>
-        <div class='input-group'>
-          <span class='input-group-btn'>
-            <button type="button" class="btn btn-sm btn-default" ng-click='nudgeLowerLimit(-15)'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></button>
-          </span>
-          <input type='text' class='form-control input-sm' value='{{dateTimeFormatter(o.lower)}}' readonly>
-          <span class='input-group-btn'>
-            <button type="button" class="btn btn-sm btn-default" ng-click="nudgeLowerLimit(15)"><span class='glyphicon glyphicon-plus' aria-hidden='true'></span></button>
-          </span>
-        </div><br>
-        <label>Upper Limit</label>
-        <div class='input-group'>
-          <span class='input-group-btn'>
-            <button type="button" class="btn btn-sm btn-default" ng-click="nudgeUpperLimit(-15)"><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></button>
-          </span>
-          <input type='text' class='form-control input-sm' value='{{dateTimeFormatter(o.upper)}}' readonly>
-          <span class='input-group-btn'>
-            <button type="button" class="btn btn-sm btn-default" ng-click="nudgeUpperLimit(15)"><span class='glyphicon glyphicon-plus' aria-hidden='true'></span></button>
-          </span>
+        <div class='content'>
+          <span class='glyphicon glyphicon-unlocked'></span>
+          <label>Lower Limit</label>
+          <div class='input-group'>
+            <span class='input-group-btn'>
+              <button type="button" class="btn btn-sm btn-default" ng-click='nudgeLowerLimit(-15)'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></button>
+            </span>
+            <input type='text' class='form-control input-sm' value='{{dateTimeFormatter(o.lower)}}' readonly>
+            <span class='input-group-btn'>
+              <button type="button" class="btn btn-sm btn-default" ng-click="nudgeLowerLimit(15)"><span class='glyphicon glyphicon-plus' aria-hidden='true'></span></button>
+            </span>
+          </div><br>
+          <label>Upper Limit</label>
+          <div class='input-group'>
+            <span class='input-group-btn'>
+              <button type="button" class="btn btn-sm btn-default" ng-click="nudgeUpperLimit(-15)"><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></button>
+            </span>
+            <input type='text' class='form-control input-sm' value='{{dateTimeFormatter(o.upper)}}' readonly>
+            <span class='input-group-btn'>
+              <button type="button" class="btn btn-sm btn-default" ng-click="nudgeUpperLimit(15)"><span class='glyphicon glyphicon-plus' aria-hidden='true'></span></button>
+            </span>
+          </div>
         </div>
       </div>
     </div>
+
     <div class='quarter-panel-container'>
       <div class='quarter panel'>
-        <h1>Request Summary</h1>
+        <h1>Steps Completed</h1>
+        <div class='content'>
           <div>
-            <input type='checkbox' 
-            ng-model="requestProgress.AOI" 
-            style="cursor: default"
-            > Area of Interest
+            <span class='glyphicon glyphicon-check' aria-hidden='true' ng-hide='!requestProgress.AOI'></span>
+            <span class='glyphicon glyphicon-unchecked' aria-hidden='true' ng-hide='requestProgress.AOI'></span>
+            Draw Area of Interest
           </div>
           <div>
-            <input type='checkbox' 
-              ng-model="requestProgress.keyword" 
-              style="cursor: default"
-            > Keywords
+            <span class='glyphicon glyphicon-check' aria-hidden='true' ng-hide='!requestProgress.keywords'></span>
+            <span class='glyphicon glyphicon-unchecked' aria-hidden='true' ng-hide='requestProgress.keywords'></span>            
+            Input Keywords
           </div>
           <div>
-            <input type='checkbox' 
-              ng-model="requestProgress.timeWindow" 
-              style="cursor: default"
-            > Time Window          
+            <span class='glyphicon glyphicon-check' aria-hidden='true' ng-hide='!requestProgress.timeWindow'></span>
+            <span class='glyphicon glyphicon-unchecked' aria-hidden='true' ng-hide='requestProgress.timeWindow'></span>            
+            Select Time Window          
           </div>
+        </div>
         <div class='footer'>
-          <button class='btn btn-sm btn-success btn-block' ng-click='makeRequest()'>
+          <button class='btn btn-sm btn-success btn-block' ng-click='makeRequest()' ng-disabled="!requestProgress.AOI || !requestProgress.keywords || !requestProgress.timeWindow">
             <span class='glyphicon glyphicon-refresh' aria-hidden='true'></span> Request Data
           </button>
         </div>

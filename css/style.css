@@ -184,6 +184,10 @@ html, body {
   margin-left: 5px;
 }
 
+#map-controls .quarter.panel .content {
+  padding: 0px 10px;
+}
+
 #map-controls .quarter.panel .footer {
   width: 100%;
   position: absolute;
