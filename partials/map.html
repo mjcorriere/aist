@@ -42,7 +42,7 @@
       </div>
     </div>
     <div class='quarter-panel-container'>
-      <div class='quarter panel'>
+      <div class='quarter panel' style='z-index: 1010'>
         <h1>Search</h1>
         <div class='content'>
           <label>Keywords</label>
@@ -56,15 +56,13 @@
         <div class='footer'>
           <div class="input-group">
             <input type="text" class="form-control input-sm" ng-model='keyword' placeholder='Enter keyword'>
-            <div class="input-group-btn">
+            <div class="input-group-btn dropup" dropdown>
               <button type="button" class="btn btn-sm btn-default" ng-click="addKeyword(keyword)"><span class='glyphicon glyphicon-plus' aria-hidden='true'></span> Add</button>
-              <button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>
+              <button type="button" class="btn btn-sm btn-default dropdown-toggle" dropdown-toggle><span class="caret"></span></button>
               <ul class="dropdown-menu" role="menu">
-                <li><a href="#">Action</a></li>
-                <li><a href="#">Another action</a></li>
-                <li><a href="#">Something else here</a></li>
-                <li class="divider"></li>
-                <li><a href="#">Separated link</a></li>
+                <li ng-repeat="keyword in keywordList">
+                  <a ng-click="addKeyword(keyword)">{{keyword}}</a>
+                </li>
               </ul>    
             </div>
           </div>
