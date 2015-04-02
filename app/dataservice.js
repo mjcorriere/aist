@@ -365,6 +365,9 @@ hs3.factory('DataService', ['$http', function($http) {
       var lines = data.split('\n');
       lines.pop();
       // console.log(lines);
+
+      colorGenerator.resetPalletteColors();
+
       for(var i = 0; i < lines.length; i++) {
         var line = lines[i].split(', ');
 
@@ -549,7 +552,12 @@ hs3.factory('DataService', ['$http', function($http) {
       'rgb(120, 120, 255)',
 
       // Hand picked:
-      'rgb(0, 255, 255)'
+      'rgb(0, 255, 255)',
+
+      // Blacks, whites, greys
+      'rgb(60, 60, 60)',
+      'rgb(225, 225, 225)',
+      'rgb(150, 150, 150)'
 
     ];
 
@@ -576,9 +584,13 @@ hs3.factory('DataService', ['$http', function($http) {
 
   ColorGenerator.prototype.getNextPalletteColor = function() {
     if (this.availableColors.length == 0) {
-      this.availableColors = this.colors.slice(0);
+      this.resetPalletteColors();
     }
     return this.availableColors.pop();
+  }
+
+  ColorGenerator.prototype.resetPalletteColors = function() {
+    this.availableColors = this.colors.slice(0);
   }
 
   ColorGenerator.prototype.getRandomColor = function() {

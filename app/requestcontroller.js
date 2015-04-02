@@ -69,9 +69,7 @@ hs3.controller('RequestController',
 
         var modalInstance = $modal.open(modalOptions);
 
-      })
-
-
+      });
 
   }
 
