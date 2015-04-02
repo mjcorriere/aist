@@ -4,6 +4,12 @@
       <img src='../img/ajax-loader.gif'>
     </div>
   </div>
+  <div ng-if="requestFailed" class="load-indicator">
+    <div class='request-error'>
+      <h1>Request Failed</h1>
+      <button class='btn btn-danger' ng-click='cancelTimeoutError()'>OK</button>
+    </div>
+  </div>
   <div id='mapmap'>
   </div>
   <div id='map-controls'>

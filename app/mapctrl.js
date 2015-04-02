@@ -20,6 +20,7 @@ hs3.controller('MapCtrl',
 
   $scope.makingRequest = false;
   $scope.showRequestPane = false;
+  $scope.requestFailed = false;
 
   $scope.requestProgress = {
     "AOI": false,
@@ -44,20 +45,6 @@ hs3.controller('MapCtrl',
 
       var raw = $scope.polygon.getPath().getArray();
 
-
-      // // NOTE: This suddenly changed to become lat, lng.
-      // // ECHO API takes coordinates in (lng, lat) order
-
-      // for (var i = 0; i < raw.length; i++) {
-      //   coordinates.push(raw[i].lat());
-      //   coordinates.push(raw[i].lng());
-      // }
-
-      // // ECHO API requires first coordinate as the last coordinate to close the polygon
-
-      // coordinates.push(raw[0].lat());
-      // coordinates.push(raw[0].lng());
-
       // ECHO API takes coordinates in (lng, lat) order
 
       for (var i = 0; i < raw.length; i++) {
@@ -73,13 +60,20 @@ hs3.controller('MapCtrl',
     }
 
     DataService.requestDatasets(keywords, startTime, endTime, coordinates)
-      .then(function() {
+      .then(function(success) {
         $scope.makingRequest = false;
-        $scope.showRequestPane = true;
-        $rootScope.$broadcast('resultsReceived');        
-        // $location.path('/request');
+        if (success) {
+          $scope.showRequestPane = true;
+          $rootScope.$broadcast('resultsReceived');
+        } else {
+          $scope.requestFailed = true;
+        }
       });
 
+  }
+
+  $scope.cancelTimeoutError = function() {
+    $scope.requestFailed = false;
   }
 
   $scope.startDrawing = function() {

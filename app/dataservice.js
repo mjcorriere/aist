@@ -65,14 +65,15 @@ hs3.factory('DataService', ['$http', function($http) {
         console.log(response);
         datasets = response.data.objects;
         console.log(datasets);
+        return true;
       },
-      function(response, status, header, config) {
-        console.log(response, status, header, config);
+      function(response) {
+        console.log(response);
         var responseTime = Date.now() - requestStart;
-        if (responseTime >= config.timeout) {
+        if (responseTime >= response.config.timeout) {
           console.log('Request timed out after 3 seconds.');
         }
-        console.log('failed. continuing');
+        return false;
       });
   }
 

@@ -266,6 +266,24 @@ html, body {
   box-sizing: border-box;
 }
 
+.request-error {
+  position: relative;
+  background-color: #FFF;
+  margin: 0 auto;
+  top: 50%;
+  margin-top: -50px;
+  width: 300px;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.request-error h1 {
+  color: #333;
+  margin-top: 0px;
+}
+
 
 .myButton {
   -moz-box-shadow: 0px 10px 14px -7px #3e7327;
