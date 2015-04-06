@@ -150,17 +150,38 @@ hs3.controller('MapCtrl',
   }
 
   $scope.nudgeUpperLimit = function(minutes) {
-    var ms = minutes * 60 * 1000;
+    var delta = minutes * 60 * 1000;
     var upper = parseInt($scope.o.upper);
-    $scope.o.upper = upper + ms;
-    $scope.redraw();
-  }
+    if (isValidNudge(delta, 'upper')) {
+      $scope.o.upper = upper + delta;
+      $scope.redraw();
+    }
+}
 
   $scope.nudgeLowerLimit = function(minutes) {
-    var ms = minutes * 60 * 1000;
+    var delta = minutes * 60 * 1000;
     var lower = parseInt($scope.o.lower);
-    $scope.o.lower = lower + ms;
-    $scope.redraw();
+    if (isValidNudge(delta, 'lower')) {
+      $scope.o.lower = lower + delta;
+      $scope.redraw();
+    }
+  }
+
+  function isValidNudge(delta, handle) {
+    // Check if its lower than ultimate low
+    var isValid = false;
+    if (handle == 'lower') {
+      var value = parseInt($scope.o.lower) + delta;
+      if (value > $scope.limits.min && value < $scope.o.mid) {
+        isValid = true;
+      }
+    } else if (handle == 'upper') {
+      var value = parseInt($scope.o.upper) + delta;
+      if (value < $scope.limits.max && value > $scope.o.mid) {
+        isValid = true;
+      }
+    }
+    return isValid;
   }
 
   function calculateCentroid(polygon) {
