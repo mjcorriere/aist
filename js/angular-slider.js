@@ -100,7 +100,8 @@
         ngModelHigh: '=?',
         ngModelMid: '=?',
         translate: '&',
-        redraw: '&'
+        redraw: '&',
+        isDirty: '=?'
       },
       template: '<div class="bar"><div class="selection"></div></div>\n<div class="handle low"></div><div class="handle high"></div>\n<div class="bubble limit low" ng-bind-html="translate({value: floor})"></div>\n<div class="bubble limit high" ng-bind-html="translate({value: ceiling})"></div>\n<div class="bubble value low"></div>\n<div class="bubble value high"></div><div class="handle mid"></div><div class="bubble value mid"></div>',
 
@@ -129,7 +130,6 @@
         // <div class="bubble value mid">
         //   
         // </div>        
-
 
       compile: function(element, attributes) {
         var bar,
@@ -219,7 +219,6 @@
           }
         }
 
-
         watchables = ['floor', 'ceiling', 'values', low];
         if (range) {
           watchables.push(high);
@@ -229,7 +228,6 @@
           watchables.push(high, mid);
         }
         // }
-
 
         return {
           post: function(scope, element, attributes) {
@@ -316,6 +314,16 @@
               minValue = parseFloat(scope.floor);
               maxValue = parseFloat(scope.ceiling);
               valueRange = maxValue - minValue;
+
+              var _low, _high, _min, _max;
+              _low = parseInt(scope[low]);
+              _min = parseInt(minValue);
+              _high = parseInt(scope[high]);
+              _max = parseInt(maxValue);
+
+              if ((_low == _min) && (_high == _max)) {
+                scope.isDirty = false;
+              }              
               
               return offsetRange = maxOffset - minOffset;
 
@@ -439,6 +447,7 @@
                   if (range) {
                     switch (currentRef) {
                       case low:
+
                         if (newValue > currentHigh) {
                           currentRef = high;
                           minPtr.removeClass('active');
@@ -469,6 +478,7 @@
                     switch (currentRef) {
                     
                       case low:
+                        scope.isDirty = true;
                         if (newValue > currentHigh) {
                           currentRef = high;
                           minPtr.removeClass('active');
@@ -482,6 +492,7 @@
                         break;
                     
                       case high:
+                        scope.isDirty = true;
                         if (newValue < currentLow) {
                           currentRef = low;
                           maxPtr.removeClass('active');

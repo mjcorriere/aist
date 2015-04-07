@@ -307,7 +307,6 @@ hs3.factory('DataService', ['$http', function($http) {
     }    
 
     if(nothingSelected) {
-      // Null the thing. This is temporary ...
       minTime = maxAvailabilityWindow.min;
       maxTime = maxAvailabilityWindow.max;
     }

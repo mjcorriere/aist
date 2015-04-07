@@ -25,8 +25,8 @@ hs3.controller('MapCtrl',
   $scope.requestProgress = {
     "AOI": false,
     "keywords": false,
-    "timeWindow": true
-  }
+    "timeWindow": false
+  };
 
   $scope.keywordList = ["AIRS", "AMSR", "ATVOS", "CALIOP", "CPR", "GPM", "IASI", "MLS", "MODIS", "PR", "SEVIRI", "SSM", "TANSO", "TES", "TRMM", "VIRS"];
 
@@ -126,9 +126,28 @@ hs3.controller('MapCtrl',
   }
 
   $scope.redraw = function() {
-    console.log('redrawing map');
+
     MapService.drawSelectedStorms();
     MapService.drawSelectedFlights();
+
+  }
+
+  $scope.nudgeUpperLimit = function(minutes) {
+    var delta = minutes * 60 * 1000;
+    var upper = parseInt($scope.o.upper);
+    if (isValidNudge(delta, 'upper')) {
+      $scope.o.upper = upper + delta;
+      $scope.redraw();
+    }
+  }
+
+  $scope.nudgeLowerLimit = function(minutes) {
+    var delta = minutes * 60 * 1000;
+    var lower = parseInt($scope.o.lower);
+    if (isValidNudge(delta, 'lower')) {
+      $scope.o.lower = lower + delta;
+      $scope.redraw();
+    }
   }
 
   function polygonComplete(polygon) {
@@ -140,35 +159,12 @@ hs3.controller('MapCtrl',
     $scope.drawingPolygon = false;
     $scope.centroid = calculateCentroid(polygon);
 
-    // google.maps.event.addListener(polygon, "dragend", function() {
-    //   $scope.centroid = calculateCentroid($scope.polygon);
-    //   $scope.apply();
-    // });
-
     $scope.$apply();
 
   }
 
-  $scope.nudgeUpperLimit = function(minutes) {
-    var delta = minutes * 60 * 1000;
-    var upper = parseInt($scope.o.upper);
-    if (isValidNudge(delta, 'upper')) {
-      $scope.o.upper = upper + delta;
-      $scope.redraw();
-    }
-}
-
-  $scope.nudgeLowerLimit = function(minutes) {
-    var delta = minutes * 60 * 1000;
-    var lower = parseInt($scope.o.lower);
-    if (isValidNudge(delta, 'lower')) {
-      $scope.o.lower = lower + delta;
-      $scope.redraw();
-    }
-  }
-
   function isValidNudge(delta, handle) {
-    // Check if its lower than ultimate low
+
     var isValid = false;
     if (handle == 'lower') {
       var value = parseInt($scope.o.lower) + delta;

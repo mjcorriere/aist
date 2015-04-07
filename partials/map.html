@@ -23,7 +23,8 @@
           ng-model-mid="o.mid"
           buffer="5"
           translate="dateFormatter"
-          redraw="redraw">
+          redraw="redraw"
+          is-dirty="requestProgress.timeWindow">
         </slider>
       </div>
     </div>
@@ -128,6 +129,7 @@
           <button class='btn btn-sm btn-success btn-block' ng-click='makeRequest()' ng-disabled="!requestProgress.AOI || !requestProgress.keywords || !requestProgress.timeWindow">
             <span class='glyphicon glyphicon-refresh' aria-hidden='true'></span> Request Data
           </button>
+
         </div>
       </div>
     </div>
