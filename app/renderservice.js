@@ -6,7 +6,9 @@ hs3.service('RenderService', [function() {
   var point           = null;
   var defaultColor    = 'rgb(225, 0, 0)';
   var disabledColor   = 'rgb(225, 225, 225)';
-  var strokeOpacity   = 0.9;
+  var strokeOpacity   = 0;
+  var stormStrokeOpacity   = 0;
+  var flightStrokeOpacity  = 0.9;  
   var disabledOpacity = 0.75;
   var polyLine        = new google.maps.Polyline();
   var pointIcon       = {
@@ -24,6 +26,11 @@ hs3.service('RenderService', [function() {
     , strokeWeight  : 2
     , scale         : 6.0
   };
+  var dashedLine       = {
+    path            : 'M 0,-1 0,1'
+    , strokeOpacity : 1
+    , scale: 3
+  };
   var polylineOptions  = {
     clickable       : false
     , draggable     : false
@@ -36,6 +43,34 @@ hs3.service('RenderService', [function() {
     , strokeWeight  : 2.0
     , visible       : true
   };
+  var stormPolylineOptions  = {
+    clickable       : false
+    , draggable     : false
+    , editable      : false
+    , geodesic      : true
+    , map           : map
+    , strokeColor   : defaultColor
+    , strokeOpacity : stormStrokeOpacity
+    , strokeWeight  : 2.0
+    , visible       : true
+    , icons         : [{
+        icon        : dashedLine
+        , offset    : '0'
+        , repeat    : '15px'
+    }]
+  };
+  var flightPolylineOptions  = {
+    clickable       : false
+    , draggable     : false
+    , editable      : false
+    , geodesic      : true
+    , icons         : null
+    , map           : map
+    , strokeColor   : defaultColor
+    , strokeOpacity : flightStrokeOpacity
+    , strokeWeight  : 2.0
+    , visible       : true
+  };  
 
   var RenderService = {}
 
@@ -49,6 +84,14 @@ hs3.service('RenderService', [function() {
       || !timeWindow.hasOwnProperty('upper')
       || !timeWindow.hasOwnProperty('mid')) {
       return null;
+    }
+
+    if (trackable.type == 'storm') {
+      strokeOpacity = stormStrokeOpacity;
+      polylineOptions = stormPolylineOptions;
+    } else if (trackable.type == 'flight') {
+      strokeOpacity = flightStrokeOpacity;
+      polylineOptions = stormPolylineOptions;
     }
     
     var position, startIndex, endIndex, startPosition, endPosition, time;

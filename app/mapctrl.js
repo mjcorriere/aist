@@ -28,7 +28,7 @@ hs3.controller('MapCtrl',
     "timeWindow": false
   };
 
-  $scope.keywordList = ["AIRS", "AMSR", "ATVOS", "CALIOP", "CPR", "GPM", "IASI", "MLS", "MODIS", "PR", "SEVIRI", "SSM", "TANSO", "TES", "TRMM", "VIRS"];
+  $scope.keywordList = ["AIRS", "AMSR", "AMSU-A", "AVHRR-3", "CALIOP", "CPR", "METOP-A", "MLS", "MODIS", "PR", "SEVIRI", "SSM", "TANSO-FTS", "TES", "VIRS"];
 
   $scope.makeRequest = function() {
 
@@ -57,7 +57,7 @@ hs3.controller('MapCtrl',
       coordinates.push(raw[0].lng());
       coordinates.push(raw[0].lat());
       
-    }
+    }    
 
     DataService.requestDatasets(keywords, startTime, endTime, coordinates)
       .then(function(success) {

@@ -382,6 +382,7 @@ hs3.factory('DataService', ['$http', function($http) {
           , "startTime" : null
           , "endTime"   : null
           , "color"     : colorGenerator.getNextPalletteColor()
+          , "type"      : "storm"
         };
 
         for(var j = i + 1; j < i + numPoints + 1; j++) {
@@ -442,6 +443,7 @@ hs3.factory('DataService', ['$http', function($http) {
           , "selected"  : false
           , "available" : true
           , "color"     : colorGenerator.getNextPalletteColor()
+          , "type"      : "flight"
         };
 
         for(var j = i + 1; j < i + numPoints + 1; j++) {
@@ -481,59 +483,6 @@ hs3.factory('DataService', ['$http', function($http) {
 
   function ColorGenerator() {
 
-    // this.colors = [
-    //   'rgb(170,  57,  57)',
-    //   'rgb(255, 170, 170)',
-    //   'rgb(212, 106, 106)',
-    //   'rgb(128,  21,  21)',
-    //   'rgb( 85,   0,   0)',
-    //   'rgb(255,   0,   0)',
-    //   'rgb(255,  99,  99)',
-    //   'rgb(255,  57,  57)',
-    //   'rgb(197,   0,   0)',
-    //   'rgb(155,   0,   0)',
-    //   'rgb(170, 170,  57)',
-    //   'rgb(255, 255, 170)',
-
-
-
-
-    //   'rgb(255, 255,  99)',
-
-
-
-    //   'rgb( 45, 136,  45)',
-    //   'rgb(136, 204, 136)',
-    //   'rgb( 85, 170,  85)',
-    //   'rgb( 17, 102,  17)',
-
-
-
-
-
-
-    //   'rgb(111,  37, 111)',
-    //   'rgb(166, 111, 166)',
-    //   'rgb(138,  69, 138)',
-
-
-
-    //   'rgb(188,  73, 188)',
-    //   'rgb(171,  38, 171)',
-
-
-    //   'rgb( 41,  80, 109)',
-    //   'rgb(113, 142, 164)',
-    //   'rgb( 73, 109, 137)',
-
-
-    //   'rgb( 11,  97, 164)',
-    //   'rgb( 80, 140, 187)',
-    //   'rgb( 46, 116, 170)',
-    //   'rgb(  8,  75, 127)',
-
-    // ];
-
     this.colors = [
 
       // Primaries: Red, Yellow, Orange, Purple, Blue
@@ -552,6 +501,8 @@ hs3.factory('DataService', ['$http', function($http) {
 
       // Hand picked:
       'rgb(0, 255, 255)',
+      'rgb(60, 60, 255)',
+      'rgb(120, 120, 0)',
 
       // Blacks, whites, greys
       'rgb(60, 60, 60)',
