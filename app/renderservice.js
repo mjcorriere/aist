@@ -91,7 +91,7 @@ hs3.service('RenderService', [function() {
       polylineOptions = stormPolylineOptions;
     } else if (trackable.type == 'flight') {
       strokeOpacity = flightStrokeOpacity;
-      polylineOptions = stormPolylineOptions;
+      polylineOptions = flightPolylineOptions;
     }
     
     var position, startIndex, endIndex, startPosition, endPosition, time;
