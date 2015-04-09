@@ -2,6 +2,7 @@ hs3.controller('RequestController',
 ['$scope', '$filter', '$modal', 'DataService', 'ngTableParams', 
   function($scope, $filter, $modal, DataService, ngTableParams) {
 
+  $scope.requestNumber = 1;
   $scope.showRequestPane = false;
 
   $scope.$on('resultsReceived', function(event, arg) {
@@ -16,11 +17,15 @@ hs3.controller('RequestController',
 
   $scope.init = function() {
 
+    $scope.requestNumber += 1;
+    
     var data = DataService.getDatasets();
+    
+    var count = tableUpdateHack($scope.requestNumber);
 
     $scope.tableParams = new ngTableParams({
         page: 1,            // show first page
-        count: 10,           // count per page
+        count: count,           // count per page
         filter: {
           title: ''
         },
@@ -28,7 +33,7 @@ hs3.controller('RequestController',
           title: 'asc'
         }
 
-    }, {
+     }, {
         total: data.length, // length of data
         getData: function($defer, params) {
             
@@ -42,7 +47,7 @@ hs3.controller('RequestController',
             $defer.resolve(orderedData.slice((params.page() - 1) 
                             * params.count(), params.page() * params.count()));
         }
-    });
+      });
 
   }
 
@@ -75,6 +80,7 @@ hs3.controller('RequestController',
 
 }]);
 
+
 hs3.controller('ModalController', ['$scope', '$modalInstance', 'id', 'granules',
   function($scope, $modalInstance, id, granules) {
 
@@ -90,3 +96,18 @@ hs3.controller('ModalController', ['$scope', '$modalInstance', 'id', 'granules',
     }
 
 }]);
+
+function tableUpdateHack(n) {
+
+  // The only way to get ngTable to update the data in the table is to
+  // change the number of elements per page (count). This 
+  // swaps the count between 10 and 11 every time a request is made
+  // to ensure the table updates.
+
+    if ((n % 2) == 0) {
+      return 10;
+    } else {
+      return 11;
+    }  
+
+}

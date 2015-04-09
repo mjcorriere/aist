@@ -11,9 +11,9 @@
             filter="{ 'title': 'text' }">
             {{row.title}}
           </td>
-<!--           <td data-title="'Granule ID'">
-            {{row.id}}
-          </td> -->
+          <td data-title="'Granule Count'">
+            {{row.granule_count}}
+          </td>          
           <td data-title="''" style='width: 1px'>
             <button class='btn btn-info' ng-click="download(row.id)">
               <span class='glyphicon glyphicon-refresh' aria-hidden='true'></span> Request

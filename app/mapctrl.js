@@ -53,7 +53,8 @@ hs3.controller('MapCtrl',
     var coordinates = [],
         sensors     = [],
         instruments = [],
-        platforms   = [];
+        platforms   = [],
+        searchTerms = {};
 
     $scope.makingRequest = true;
 
@@ -63,6 +64,10 @@ hs3.controller('MapCtrl',
     }
 
     var keywords = $scope.keywords.join(' ');
+
+    searchTerms.sensors = sensors;
+    searchTerms.instruments = instruments;
+    searchTerms.platforms = platforms;
     
     startTime = parseInt($scope.o.lower);
     endTime = parseInt($scope.o.upper);
@@ -85,7 +90,7 @@ hs3.controller('MapCtrl',
       
     }    
 
-    DataService.requestDatasets(keywords, startTime, endTime, coordinates)
+    DataService.requestDatasets(startTime, endTime, coordinates, searchTerms)
       .then(function(success) {
         $scope.makingRequest = false;
         if (success) {

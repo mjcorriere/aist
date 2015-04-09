@@ -44,17 +44,18 @@ hs3.factory('DataService', ['$http', function($http) {
 
     console.log('Request parameters:', _searchTerms, _startTime, _endTime, _coordinates)
 
-    sensors     = _searchTerms.sensors      ? _sensors.join(' ')     : '';
-    instruments = _searchTerms.instruments  ? _instruments.join(' ') : '';
-    platforms   = _searchTerms.platforms    ? _platforms.join(' ')   : '';
+    
+
+    sensors     = _searchTerms.sensors      ? _searchTerms.sensors.join(' ')     : '';
+    instruments = _searchTerms.instruments  ? _searchTerms.instruments.join(' ') : '';
+    platforms   = _searchTerms.platforms    ? _searchTerms.platforms.join(' ')   : '';
     startTime   = _startTime                ? new Date(_startTime).toISOString() : '';
     endTime     = _endTime                  ? new Date(_endTime).toISOString()   : '';
     coordinates = _coordinates              ? _coordinates.join()                : '';
 
     var request = servletUrl 
                     + 'datasets'
-                    + '?keyword='     + keyword
-                    + '&sensor='      + sensors
+                    + '?sensor='      + sensors
                     + '&instrument='  + instruments
                     + '&platform='    + platforms
                     + '&start='       + startTime 
