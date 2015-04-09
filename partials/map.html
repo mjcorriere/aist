@@ -61,18 +61,14 @@
           </div>
         </div>
         <div class='footer'>
-          <div class="input-group">
-            <input type="text" class="form-control input-sm" ng-model='keyword' placeholder='Enter keyword'>
-            <div class="input-group-btn dropup" dropdown>
-              <button type="button" class="btn btn-sm btn-default" ng-click="addKeyword(keyword)"><span class='glyphicon glyphicon-plus' aria-hidden='true'></span> Add</button>
-              <button type="button" class="btn btn-sm btn-default dropdown-toggle" dropdown-toggle><span class="caret"></span></button>
+            <div class="dropup" dropdown>
+              <button type="button" class="btn btn-sm btn-default btn-block dropdown-toggle keyword-button" dropdown-toggle><span class='keyword-button-text'>Select a keyword ... </span><span class="caret"></span></button>
               <ul class="dropdown-menu" role="menu">
                 <li ng-repeat="keyword in keywordList">
                   <a ng-click="addKeyword(keyword)">{{keyword}}</a>
                 </li>
               </ul>    
             </div>
-          </div>
         </div>
       </div>
     </div>

@@ -16,7 +16,9 @@ hs3.controller('MapCtrl',
   $scope.polygon = null;
 
   $scope.keyword = '';
+  $scope.selectedKeyword = 'Select a Keyword';
   $scope.keywords = [];
+
 
   $scope.makingRequest = false;
   $scope.showRequestPane = false;
@@ -132,7 +134,9 @@ hs3.controller('MapCtrl',
       }
       $scope.keywords.push(keyword);
     }
+    $scope.selectedKeyword = keyword;
     $scope.keyword = '';
+
   }
 
   $scope.removeKeyword = function(keyword) {
