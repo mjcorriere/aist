@@ -29,33 +29,38 @@ hs3.factory('DataService', ['$http', function($http) {
     "mid"   : null
   };
 
-  var keyword, startTime, endTime, coordinates;
+  var keyword, sensors, instruments, platforms, startTime, endTime, coordinates;
 
   var datasets = [];
   var granules = [];
  
   var DataService = {};
 
-  DataService.requestDatasets = function(_keyword, _startTime, _endTime, _coordinates) {
-    // datasets?keyword=AMSU&start=2014-01-03T12:00:00&end=2014-01-04T12:00:00&geotype=bb&coords=116.904,24.527,117.680,39.834    
-    var debugRequest = "http://mldlinvm.draper.com:8080/aistservlet/datasets?keyword=airs&start=1999-01-03T12:00:00&end=1999-08-23T12:00:00&geotype=bb&coords=116.904,24.527,141.680,39.834";
+  DataService.requestDatasets = function(_startTime, _endTime, _coordinates, _searchTerms) {
+
+    // var debugRequest = "http://mldlinvm.draper.com:8080/aistservlet/datasets?keyword=airs&start=1999-01-03T12:00:00&end=1999-08-23T12:00:00&geotype=bb&coords=116.904,24.527,141.680,39.834";
 
     // Format the startTimes
 
-    console.log('Request parameters:', _keyword, _startTime, _endTime, _coordinates)
+    console.log('Request parameters:', _searchTerms, _startTime, _endTime, _coordinates)
 
-    keyword     = _keyword      ? _keyword                           : '';
-    startTime   = _startTime    ? new Date(_startTime).toISOString() : '';
-    endTime     = _endTime      ? new Date(_endTime).toISOString()   : '';
-    coordinates = _coordinates  ? _coordinates.join()                : '';
+    sensors     = _searchTerms.sensors      ? _sensors.join(' ')     : '';
+    instruments = _searchTerms.instruments  ? _instruments.join(' ') : '';
+    platforms   = _searchTerms.platforms    ? _platforms.join(' ')   : '';
+    startTime   = _startTime                ? new Date(_startTime).toISOString() : '';
+    endTime     = _endTime                  ? new Date(_endTime).toISOString()   : '';
+    coordinates = _coordinates              ? _coordinates.join()                : '';
 
     var request = servletUrl 
                     + 'datasets'
-                    + '?keyword=' + keyword
-                    + '&start='   + startTime 
-                    + '&end='     + endTime 
-                    + '&geotype=' + 'polygon'
-                    + '&coords='  + coordinates;
+                    + '?keyword='     + keyword
+                    + '&sensor='      + sensors
+                    + '&instrument='  + instruments
+                    + '&platform='    + platforms
+                    + '&start='       + startTime 
+                    + '&end='         + endTime 
+                    + '&geotype='     + 'polygon'
+                    + '&coords='      + coordinates;
 
     console.log('request: ', request);
 

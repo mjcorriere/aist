@@ -29,14 +29,40 @@ hs3.controller('MapCtrl',
   };
 
   $scope.keywordList = ["AIRS", "AMSR", "AMSU-A", "AVHRR-3", "CALIOP", "CPR", "METOP-A", "MLS", "MODIS", "PR", "SEVIRI", "SSM", "TANSO-FTS", "TES", "VIRS"];
+  $scope.keywordMap = {
+    "AIRS": "sensor",
+    "AMSR": "instrument",
+    "AMSU-A": "instrument",
+    "AVHRR-3": "instrument",
+    "CALIOP": "platform",
+    "CPR": "instrument",
+    "METOP-A": "platform",
+    "MLS": "sensor",
+    "MODIS": "instrument",
+    "PR": "instrument",
+    "SEVIRI": "instrument",
+    "SSM": "sensor",
+    "TANSO-FTS": "instrument",
+    "TES": "instrument",
+    "VIRS": "sensor"
+  };
 
   $scope.makeRequest = function() {
 
-    var keywords, startTime, endTime, coordinates = [];
+    var startTime, endTime;
+    var coordinates = [],
+        sensors     = [],
+        instruments = [],
+        platforms   = [];
 
     $scope.makingRequest = true;
 
-    keywords = $scope.keywords.join(' ');
+    for (var i = 0; i < $scope.keywords.length; i++) {
+      var keyword = $scope.keywords[i];
+      eval($scope.keywordMap[keyword] + 's').push(keyword);
+    }
+
+    var keywords = $scope.keywords.join(' ');
     
     startTime = parseInt($scope.o.lower);
     endTime = parseInt($scope.o.upper);
